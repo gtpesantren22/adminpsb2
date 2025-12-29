@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/login', function () {
     return view('main.login');
-});
+})->name('login');
 
 Route::middleware('auth')->group(function () {
 
