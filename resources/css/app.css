@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@theme {
+    --color-primary-blue: #1e40af;
+    --color-secondary-blue: #3b82f6;
+    --color-light-blue: #eff6ff;
+    --color-dark-gray: #4b5563;
+    --color-medium-gray: #6b7280;
+    --color-light-gray: #9ca3af;
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+}
+
+:root {
+    --primary-blue: #1e40af;
+    --secondary-blue: #3b82f6;
+    --light-blue: #eff6ff;
+    --dark-gray: #4b5563;
+    --medium-gray: #6b7280;
+    --light-gray: #9ca3af;
+    --sidebar-width: 16rem;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--light-gray);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--medium-gray);
+}
+
+/* Sidebar Animation */
+.sidebar-enter {
+    transform: translateX(-100%);
+}
+
+.sidebar-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms ease-in-out;
+}
+
+.sidebar-exit {
+    transform: translateX(0);
+}
+
+.sidebar-exit-active {
+    transform: translateX(-100%);
+    transition: transform 300ms ease-in-out;
+}
+
+/* Page Transition */
+.page-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+    opacity: 1;
+}
+
+.page-exit-active {
+    opacity: 0;
+    transition: opacity 300ms;
+}
+
+/* Shadow Hover */
+.shadow-hover {
+    transition: box-shadow 0.3s ease;
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(
+        90deg,
+        var(--primary-blue),
+        var(--secondary-blue)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
