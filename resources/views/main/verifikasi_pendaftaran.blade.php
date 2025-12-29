@@ -2,5 +2,5 @@
 @section('title', 'Verifikasi pendaftaran')
 
 @section('content')
-    @livewire('verifikasipendaftaran')
+    @livewire('verifikasi-pendaftaran')
 @endsection

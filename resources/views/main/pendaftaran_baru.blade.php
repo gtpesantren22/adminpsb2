@@ -2,5 +2,5 @@
 @section('title', 'Pembayaran pendaftaran santri baru')
 
 @section('content')
-    @livewire('pendaftaranbaru')
+    @livewire('pendaftaran-baru')
 @endsection

@@ -2,5 +2,5 @@
 @section('title', 'Halaman Santri Lanjutan')
 
 @section('content')
-    @livewire('santrilama')
+    @livewire('santri-lama')
 @endsection
