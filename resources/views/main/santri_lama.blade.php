@@ -2,5 +2,6 @@
 @section('title', 'Halaman Santri Lanjutan')
 
 @section('content')
-    @livewire('santri-lama')
+    {{-- @livewire('santri-lama') --}}
+    <livewire:santri-lama lazy />
 @endsection

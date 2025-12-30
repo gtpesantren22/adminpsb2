@@ -2,5 +2,5 @@
 @section('title', 'Halaman Dashboard')
 
 @section('content')
-    @livewire('dashboard')
+    <livewire:dashboard lazy />
 @endsection

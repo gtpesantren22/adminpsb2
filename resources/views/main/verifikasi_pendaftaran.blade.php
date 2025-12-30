@@ -2,5 +2,6 @@
 @section('title', 'Verifikasi pendaftaran')
 
 @section('content')
-    @livewire('verifikasi-pendaftaran')
+    <livewire:verifikasi-pendaftaran lazy />
+    {{-- @livewire('', lazy) --}}
 @endsection
