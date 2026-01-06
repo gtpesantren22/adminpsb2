@@ -39,11 +39,11 @@ class VerifikasiPendaftaran extends Component
         // dd($this->loadData());
     }
 
-    // public function updatedSearch()
-    // {
-    //     $this->page = 1;
-    //     $this->loadData();
-    // }
+    public function updatedSearch()
+    {
+        $this->page = 1;
+        $this->loadData();
+    }
 
     // public function updatedPerPage()
     // {

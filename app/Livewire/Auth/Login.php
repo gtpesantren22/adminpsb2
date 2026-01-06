@@ -37,9 +37,9 @@ class Login extends Component
                 timer: 1500,
                 redirect: url('/')
             );
+        } else {
+            $this->errorMessage = 'Email atau password salah';
         }
-
-        $this->errorMessage = 'Email atau password salah';
     }
 
     public function render()

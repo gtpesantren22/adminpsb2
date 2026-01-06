@@ -110,9 +110,11 @@
                 </div>
 
             </div>
-
-
-            {{ $datas->links() }}
+            @if ($datas->links())
+                <div class="border-t border-gray-200 bg-white px-4 py-3">
+                    {{ $datas->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>

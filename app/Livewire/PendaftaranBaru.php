@@ -4,11 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Pendaftaran;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class PendaftaranBaru extends Component
 {
+    use WithPagination;
+
     public $search = '';
     public $paginate = 10;
+    protected $paginationTheme = 'tailwind';
+
     public function render()
     {
         return view('livewire.pendaftaran-baru', [
@@ -17,7 +22,7 @@ class PendaftaranBaru extends Component
                     $q->where('nama', 'ILIKE', '%' . $this->search . '%');
                     $q->where('lembaga', 'ILIKE', '%' . $this->search . '%');
                 })
-                ->paginate($this->paginate)
+                ->paginate($this->paginate)->onEachSide(0)
         ]);
     }
 
@@ -36,5 +41,9 @@ class PendaftaranBaru extends Component
                     </div>
         </div>
         HTML;
+    }
+    public function updatedSearch()
+    {
+        $this->resetPage();
     }
 }

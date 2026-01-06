@@ -13,17 +13,17 @@
 
         <div class="bg-white rounded-xl shadow-md overflow-hidden shadow-hover">
             <div class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between">
-                {{-- <div class="mb-4 md:mb-0">
+                <div class="mb-4 md:mb-0">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
-                        <input type="text" wire:model.debounce.500ms="search"
+                        <input type="text" wire:model.live="search"
                             class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-blue focus:border-transparent"
                             placeholder="Cari data...">
                     </div>
                 </div>
-                <div class="flex space-x-3">
+                {{-- <div class="flex space-x-3">
                     <select wire:model="perPage"
                         class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-blue">
                         <option value="10">10</option>
@@ -38,7 +38,7 @@
                 </div> --}}
             </div>
 
-            <div class="overflow-x-auto">
+            <div class="relative overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
@@ -142,6 +142,8 @@
 
                     </tbody>
                 </table>
+
+                <!-- FULL CENTER SPINNER -->
                 <div wire:loading wire:target="search,paginate"
                     class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10">
 
@@ -152,10 +154,6 @@
                             <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor"
                                 stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 94.2" />
                         </svg>
-
-                        <span class="text-sm text-gray-600">
-                            Mencari data...
-                        </span>
                     </div>
 
                 </div>

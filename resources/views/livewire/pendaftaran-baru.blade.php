@@ -10,7 +10,7 @@
             </button>
         </div> --}}
 
-        <div class="bg-white rounded-xl shadow-md overflow-hidden shadow-hover">
+        <div class="bg-white rounded-xl shadow-md shadow-hover">
             <div class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between">
                 <div class="mb-4 md:mb-0">
                     <div class="relative">
@@ -105,9 +105,11 @@
                 </div>
 
             </div>
-
-
-            {{ $datas->links() }}
+            @if ($datas->links())
+                <div class="border-t border-gray-200 bg-white px-4 py-3">
+                    {{ $datas->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>
