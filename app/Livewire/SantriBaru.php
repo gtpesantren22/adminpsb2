@@ -30,7 +30,7 @@ class SantriBaru extends Component
                         ->orWhere('lembaga', 'ILIKE', "%{$this->search}%");
                 });
             })
-            ->paginate($this->paginate);
+            ->paginate($this->paginate)->onEachSide(0);
 
         return view('livewire.santri-baru', compact('datas'));
     }

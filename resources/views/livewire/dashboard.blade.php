@@ -33,7 +33,7 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="text-sm font-medium text-gray-500">Registrasi Ulang</p>
-                    <p class="text-2xl font-bold text-gray-800 mt-2">Rp. 0</p>
+                    <p class="text-2xl font-bold text-gray-800 mt-2">Rp. {{ number_format($registrasi) }}</p>
                     <p class="text-xs text-yellow-500 mt-1">Pembayaran Registrasi Ulang</p>
                 </div>
                 <div class="bg-yellow-50 p-3 rounded-lg">

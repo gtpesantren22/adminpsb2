@@ -25,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pendaftaran-baru', function () {
         return view('main.pendaftaran_baru');
     });
+    Route::get('/registrasi-baru', function () {
+        return view('main.registrasi_baru');
+    });
 
     Route::get('/logout', function () {
         auth()->logout();

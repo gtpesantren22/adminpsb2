@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Pendaftaran;
+use App\Models\Registrasi;
 use App\Models\Santri;
 use Livewire\Component;
 
@@ -14,6 +15,8 @@ class Dashboard extends Component
             'jml_santri' => Santri::all()->count(),
             'jml_pendaftaran' => Pendaftaran::all()->count(),
             'nominal_pendaftaran' => Pendaftaran::sum('nominal'),
+            'registrasi' => Registrasi::sum('nominal'),
+            
         ]);
     }
     public function placeholder()

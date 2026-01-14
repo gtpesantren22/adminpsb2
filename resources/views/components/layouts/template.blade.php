@@ -58,9 +58,10 @@
                     @php
                         $santriActive = request()->is('santri-baru*') || request()->is('santri-lama*');
                         $pendaftaranActive =
-                            request()->is('pendaftaran-baru*') ||
-                            request()->is('pendaftaran-lama*') ||
-                            request()->is('verifikasi-pendaftaran*');
+                        request()->is('pendaftaran-baru*') ||
+                        request()->is('pendaftaran-lama*') ||
+                        request()->is('verifikasi-pendaftaran*');
+                        $registrasiActive = request()->is('registrasi-baru*') || request()->is('registrasi-lama*');
                     @endphp
 
                     <li>
@@ -134,6 +135,40 @@
                                             ? 'bg-secondary-blue text-white'
                                             : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
                                         Verifikasi Pendaftaran
+                                    </a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
+                    <li>
+                        <details class="group" {{ $registrasiActive ? 'open' : '' }}>
+                            <summary
+                                class="sidebar-link flex items-center px-4 py-3 rounded-lg transition cursor-pointer list-none {{ $santriActive ? 'bg-blue-800 text-white' : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                <i class="fas fa-wallet w-6 text-center mr-3"></i>
+                                <span class="flex-1">Registrasi</span>
+
+                                <!-- Arrow -->
+                                <i
+                                    class="fas fa-chevron-down text-sm transition-transform duration-200 group-open:rotate-180">
+                                </i>
+                            </summary>
+
+                            <ul class="mt-1 ml-8 space-y-1 animate-fade-in">
+                                <li>
+                                    <a href="/registrasi-baru" wire:navigate
+                                        class="block px-4 py-2 rounded-lg transition {{ request()->is('registrasi-baru*')
+                                            ? 'bg-secondary-blue text-white'
+                                            : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                        Registrasi Baru
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/registrasi-lama" wire:navigate
+                                        class="block px-4 py-2 rounded-lg transition {{ request()->is('registrasi-lama*')
+                                            ? 'bg-secondary-blue text-white'
+                                            : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                        Registrasi Lanjutan
                                     </a>
                                 </li>
                             </ul>

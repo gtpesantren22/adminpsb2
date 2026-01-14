@@ -19,6 +19,7 @@ class PendaftaranBaru extends Component
         return view('livewire.pendaftaran-baru', [
             'datas' => Pendaftaran::with('santri')
                 ->whereHas('santri', function ($q) {
+                    $q->where('ket', 'baru');
                     $q->where('nama', 'ILIKE', '%' . $this->search . '%');
                     $q->where('lembaga', 'ILIKE', '%' . $this->search . '%');
                 })
