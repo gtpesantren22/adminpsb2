@@ -58,17 +58,19 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @forelse ($datas as $row)
                             @php
+                                $statusClass = '';
                                 if ($row->total_bayar < $row->total_tanggungan) {
                                     $status = 'Belum';
-                                    $bgColor = 'red';
+                                    $statusClass = 'bg-red-100 text-red-800';
                                 } elseif ($row->total_bayar == $row->total_tanggungan) {
                                     $status = 'Lunas';
-                                    $bgColor = 'green';
+                                    $statusClass = 'bg-green-100 text-green-800';
                                 } else {
                                     $status = 'Lebih';
-                                    $bgColor = 'yellow';
+                                    $statusClass = 'bg-yellow-100 text-yellow-800';
                                 }
                             @endphp
+
                             <tr>
                                 <td class="px-6 py-3">
                                     {{ $datas->firstItem() + $loop->index }}
@@ -79,7 +81,7 @@
                                 <td class="px-6 py-3">{{ number_format($row->total_bayar) }}</td>
                                 <td class="px-6 py-3">
                                     <span
-                                        class="bg-{{ $bgColor }}-100 text-{{ $bgColor }}-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">{{ $status }}</span>
+                                        class="{{ $statusClass }} text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm ">{{ $status }}</span>
                                     <span>
                                 </td>
 
