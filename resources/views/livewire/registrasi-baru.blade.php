@@ -85,7 +85,7 @@
 
                                 <td class="px-6 py-3">
                                     <button wire:click.prevent="detail('{{ $row->id_santri }}')"
-                                        class="text-secondary-blue mr-3">
+                                        class="text-secondary-blue mr-3 cursor-pointer">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="text-red-500">

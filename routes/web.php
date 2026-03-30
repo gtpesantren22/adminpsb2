@@ -25,8 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/pendaftaran-baru', function () {
         return view('main.pendaftaran_baru');
     });
+    Route::get('/pendaftaran-lama', function () {
+        return view('main.pendaftaran_lama');
+    });
     Route::get('/registrasi-baru', function () {
         return view('main.registrasi_baru');
+    });
+    Route::get('/registrasi-lama', function () {
+        return view('main.registrasi_lama');
     });
 
     Route::get('/logout', function () {

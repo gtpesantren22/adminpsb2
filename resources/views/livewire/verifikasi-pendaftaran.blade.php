@@ -45,9 +45,6 @@
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">#
                             </th>
-                            {{-- <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                NIS</th> --}}
                             <th scope="col" wire:click="sort('nama')"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Nama</th>
@@ -60,6 +57,9 @@
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Lembaga Tujuan</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Ket</th>
                             <th scope="col"
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Status</th>
@@ -90,7 +90,14 @@
                                     </td>
                                     <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">
                                         {{ $row['lembaga']['nama'] }}</td>
-                                    <td>
+                                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">
+                                        @if ($row['pd_lama'] == null)
+                                            <span class="text-blue-600 bg-blue-100 px-1 py-1 rounded text-xs font-semibold">Baru</span>
+                                        @else
+                                            <span class="text-orange-600 bg-orange-100 px-1 py-1 rounded text-xs font-semibold">Lanjutan</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-3 whitespace-nowrap text-sm text-gray-500">
                                         @if ($row['is_santri'])
                                             <span class="text-green-600 font-semibold">Terverifikasi</span>
                                         @else
@@ -271,6 +278,7 @@
                                             'Lembaga' => $userById['lembaga']['nama'] ?? '-',
                                             'No HP' => $userById['whatsapp'] ?? '-',
                                             'Gelombang' => $userById['gelombang'] ?? '-',
+                                            'Ket Santri' => $userById['pd_lama'] == null ? 'Baru' : 'Lanjutan',
                                         ];
                                     @endphp
 

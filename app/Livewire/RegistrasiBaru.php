@@ -48,13 +48,15 @@ class RegistrasiBaru extends Component
                         SELECT
                             gelombang,
                             jkl,
+                            ket,
                             SUM(nominal) AS total_tanggungan
                         FROM tanggungans
-                        GROUP BY gelombang, jkl
+                        GROUP BY gelombang, jkl, ket
                     ) t
                 "), function ($join) {
                     $join->on('t.gelombang', '=', 'santris.gel')
-                        ->on('t.jkl', '=', 'santris.jkl');
+                        ->on('t.jkl', '=', 'santris.jkl')
+                        ->on('t.ket', '=', 'santris.ket');
                 })
 
                 // SUBQUERY TOTAL BAYAR
@@ -90,9 +92,11 @@ class RegistrasiBaru extends Component
         $this->userById = $userById;
         $this->tanggungan = Tanggungan::where('gelombang', $userById->gel)
             ->where('jkl', $userById->jkl)
+            ->where('ket', $userById->ket)
             ->get();
         $this->totalTanggungan = Tanggungan::where('gelombang', $userById->gel)
             ->where('jkl', $userById->jkl)
+            ->where('ket', $userById->ket)
             ->sum('nominal');
         $this->totalBayar = Registrasi::where('id_santri', $userById->id_santri)->sum('nominal');
         $this->dataBayar = Registrasi::where('id_santri', $userById->id_santri)->get();

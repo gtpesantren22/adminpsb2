@@ -113,6 +113,7 @@ class VerifikasiPendaftaran extends Component
 
         // dd($response);
         $santri = (object) collect($response['data']['data'] ?? [])->first();
+        $ket = $santri->pd_lama == null ? 'baru' : 'lama';
         $dtSave = [
             'id_santri' => $santri->peserta_didik_id,
 
@@ -179,7 +180,7 @@ class VerifikasiPendaftaran extends Component
             'asal' => $santri->sekolah_asal,
             'npsn' => 0,
             'a_asal' => $santri->alamat_sekolah_asal,
-            'ket' => 'baru',
+            'ket' => $ket,
             'tinggal' => '',
         ];
         Santri::create($dtSave);
