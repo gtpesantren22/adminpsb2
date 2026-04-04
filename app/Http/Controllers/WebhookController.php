@@ -13,68 +13,58 @@ class WebhookController extends Controller
     {
         $data = $request->all();
 
-        Log::info('WHAPI WEBHOOK', $data);
+        Log::info('WHAPI RAW', $data);
 
         try {
 
-            $type = $data['type'] ?? null;
+            $type    = $data['type'] ?? null;
+            $results = $data['results'] ?? [];
 
             // =========================
-            // 1. PESAN MASUK
+            // PESAN (INBOUND / OUTBOUND)
             // =========================
             if ($type === 'message') {
 
+                $messageId = $results['id'] ?? null;
+                $body      = $results['body'] ?? null;
+
+                $fromMe    = $results['fromMe'] ?? false;
+
+                $remoteJid = $results['key']['remoteJid'] ?? null;
+
+                $number    = $this->cleanNumber($remoteJid);
+
+                // Tentukan arah pesan
+                $direction = $fromMe ? 'outbound' : 'inbound';
+
                 WaMessage::create([
-                    'message_id' => $data['id'] ?? null,
-                    'sender'    => $this->cleanNumber($data['from'] ?? null),
-                    'receiver'  => null,
-                    'message'   => $data['body'] ?? null,
+                    'message_id' => $messageId,
+                    'sender'    => $fromMe ? null : $number,
+                    'receiver'  => $fromMe ? $number : null,
+                    'message'   => $body,
                     'type'      => 'message',
-                    'direction' => 'inbound',
+                    'direction' => $direction,
+                    'status'    => 'sent',
                     'raw'       => $data
                 ]);
 
-                // 🔥 Contoh auto respon absensi
-                $this->handleAutoReply($data);
-            }
-
-            // =========================
-            // 2. STATUS PESAN
-            // =========================
-            elseif ($type === 'message_ack') {
-
-                // Update jika ada
-                WaMessage::where('message_id', $data['message_id'] ?? null)
-                    ->update([
-                        'status' => $data['status'] ?? null
-                    ]);
-
-                // fallback kalau belum ada
-                if (!WaMessage::where('message_id', $data['message_id'] ?? null)->exists()) {
-                    WaMessage::create([
-                        'message_id' => $data['message_id'] ?? null,
-                        'type'      => 'message_ack',
-                        'status'    => $data['status'] ?? null,
-                        'raw'       => $data
-                    ]);
+                // 🔥 hanya proses auto reply jika dari user
+                if (!$fromMe) {
+                    $this->handleAutoReply($body, $number);
                 }
             }
 
             // =========================
-            // 3. PESAN KELUAR
+            // STATUS (ACK)
             // =========================
-            elseif ($type === 'message_browser') {
+            elseif ($type === 'message_ack') {
 
-                WaMessage::create([
-                    'message_id' => $data['id'] ?? null,
-                    'sender'    => null,
-                    'receiver'  => $this->cleanNumber($data['to'] ?? null),
-                    'message'   => $data['body'] ?? null,
-                    'type'      => 'message_browser',
-                    'direction' => 'outbound',
-                    'status'    => 'sent',
-                    'raw'       => $data
-                ]);
+                $results = $data['results'] ?? [];
+
+                WaMessage::where('message_id', $results['id'] ?? null)
+                    ->update([
+                        'status' => $results['status'] ?? null
+                    ]);
             }
         } catch (\Exception $e) {
             Log::error('Webhook Error: ' . $e->getMessage());
