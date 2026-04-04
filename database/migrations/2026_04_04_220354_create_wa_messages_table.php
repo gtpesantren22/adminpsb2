@@ -13,12 +13,19 @@ return new class extends Migration
     {
         Schema::create('wa_messages', function (Blueprint $table) {
             $table->id();
-            $table->string('sender');
+            $table->string('message_id')->nullable()->index();
+
+            $table->string('sender')->nullable();
+            $table->string('receiver')->nullable();
+
             $table->text('message')->nullable();
-            $table->string('type')->nullable();
-            $table->string('message_id')->nullable();
-            $table->string('status')->nullable();
+
+            $table->string('type'); // message, message_ack, message_browser
             $table->string('direction')->nullable(); // inbound / outbound
+
+            $table->string('status')->nullable(); // sent, delivered, read
+
+            $table->json('raw')->nullable(); // simpan raw JSON (PENTING 🔥)
             $table->timestamps();
         });
     }
