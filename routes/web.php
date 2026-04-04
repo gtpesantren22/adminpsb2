@@ -34,6 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrasi-lama', function () {
         return view('main.registrasi_lama');
     });
+    Route::get('/informasi-santri-baru', function () {
+        return view('main.informasi_santri_baru');
+    });
 
     Route::get('/logout', function () {
         auth()->logout();

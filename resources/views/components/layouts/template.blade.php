@@ -58,10 +58,12 @@
                     @php
                         $santriActive = request()->is('santri-baru*') || request()->is('santri-lama*');
                         $pendaftaranActive =
-                        request()->is('pendaftaran-baru*') ||
-                        request()->is('pendaftaran-lama*') ||
-                        request()->is('verifikasi-pendaftaran*');
+                            request()->is('pendaftaran-baru*') ||
+                            request()->is('pendaftaran-lama*') ||
+                            request()->is('verifikasi-pendaftaran*');
                         $registrasiActive = request()->is('registrasi-baru*') || request()->is('registrasi-lama*');
+                        $informasiActive =
+                            request()->is('informasi-santri-baru*') || request()->is('informasi-santri-lama*');
                     @endphp
 
                     <li>
@@ -174,35 +176,47 @@
                             </ul>
                         </details>
                     </li>
-
-
-                    {{-- <li>
-                        <a href="#"
-                            class="sidebar-link flex items-center px-4 py-3 rounded-lg {{ request()->is('/transaksi') ? 'bg-secondary-blue text-white' : 'text-blue-100 hover:bg-blue-700 hover:text-white' }} transition duration-150">
-                            <i class="fas fa-exchange-alt w-6 text-center mr-3"></i>
-                            <span>Transaksi</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-page="laporan"
-                            class="sidebar-link flex items-center px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition duration-150">
-                            <i class="fas fa-chart-bar w-6 text-center mr-3"></i>
-                            <span>Laporan</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" data-page="export"
-                            class="sidebar-link flex items-center px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition duration-150">
-                            <i class="fas fa-file-export w-6 text-center mr-3"></i>
-                            <span>Export Data</span>
-                        </a> --}}
-                    </li>
                 </ul>
             </div>
 
             <div>
-                <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-4">Pengaturan</h2>
+                <h2 class="text-xs uppercase tracking-wider text-blue-300 font-semibold mb-4">Add-on</h2>
                 <ul class="space-y-2">
+                    {{-- Buatkan menu dibawah ini Informasi dengan 2 menu yaitu SAntri baru dan Lanjutan --}}
+                    <li>
+                        <details class="group" {{ $informasiActive ? 'open' : '' }}>
+                            <summary
+                                class="sidebar-link flex items-center px-4 py-3 rounded-lg transition cursor-pointer list-none {{ $informasiActive ? 'bg-blue-800 text-white' : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                <i class="fas fa-info-circle w-6 text-center mr-3"></i>
+                                <span class="flex-1">Informasi</span>
+
+                                <!-- Arrow -->
+                                <i
+                                    class="fas fa-chevron-down text-sm transition-transform duration-200 group-open:rotate-180">
+                                </i>
+                            </summary>
+
+                            <ul class="mt-1 ml-8 space-y-1 animate-fade-in">
+                                <li>
+                                    <a href="/informasi-santri-baru" wire:navigate
+                                        class="block px-4 py-2 rounded-lg transition {{ request()->is('informasi-santri-baru*')
+                                            ? 'bg-secondary-blue text-white'
+                                            : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                        Informasi Santri Baru
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="/informasi-santri-lanjutan" wire:navigate
+                                        class="block px-4 py-2 rounded-lg transition {{ request()->is('informasi-santri-lanjutan*')
+                                            ? 'bg-secondary-blue text-white'
+                                            : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                        Informasi Santri Lanjutan
+                                    </a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>
                     <li>
                         <a href="#"
                             class="flex items-center px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition duration-150">
@@ -210,13 +224,6 @@
                             <span>Pengaturan</span>
                         </a>
                     </li>
-                    {{-- <li>
-                        <a href="#"
-                            class="flex items-center px-4 py-3 rounded-lg text-blue-100 hover:bg-blue-700 hover:text-white transition duration-150">
-                            <i class="fas fa-user-circle w-6 text-center mr-3"></i>
-                            <span>Profil</span>
-                        </a>
-                    </li> --}}
                 </ul>
             </div>
         </div>
