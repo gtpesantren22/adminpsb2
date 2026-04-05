@@ -33,7 +33,7 @@ class InformasiSantriBaru extends Component
                 'santris.lembaga',
                 DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
                 DB::raw('COALESCE(r.total_bayar, 0) as total_bayar'),
-                DB::raw("COALESCE(w.last_message, '-') as last_message"),
+                DB::raw("COALESCE(w.last_message, '-') as last_message, w.direction as direction"),
             ])
             ->leftJoin(DB::raw("
                 (
