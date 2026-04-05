@@ -64,9 +64,11 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                                 Nama
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
+                            {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th> --}}
                             {{-- <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">No. HP</th> --}}
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lembaga</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Message
+                            </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registrasi</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase w-48">Aksi
@@ -81,11 +83,12 @@
                                     {{ $datas->firstItem() + $loop->index }}
                                 </td>
                                 <td class="px-6 py-3 text-gray-700 font-medium align-middle">{{ $row->nama }}</td>
-                                <td class="px-6 py-3 text-gray-500 text-sm align-middle">
+                                {{-- <td class="px-6 py-3 text-gray-500 text-sm align-middle">
                                     {{ $row->desa }} - {{ $row->kec }} - {{ $row->kab }}
-                                </td>
+                                </td> --}}
                                 {{-- <td class="px-6 py-3 text-gray-700 align-middle">{{ $row->hp }}</td> --}}
                                 <td class="px-6 py-3 text-gray-700 align-middle">{{ $row->lembaga }}</td>
+                                <td class="px-6 py-3 text-gray-700 align-middle">{{ $row->last_message }}</td>
                                 <td class="px-6 py-3 text-gray-700 align-middle">
                                     @php
                                         $prosentase =

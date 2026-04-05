@@ -33,6 +33,7 @@ class InformasiSantriBaru extends Component
                 'santris.lembaga',
                 DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
                 DB::raw('COALESCE(r.total_bayar, 0) as total_bayar'),
+                DB::raw("COALESCE(w.last_message, '-') as last_message"),
             ])
             ->leftJoin(DB::raw("
                 (
@@ -58,6 +59,29 @@ class InformasiSantriBaru extends Component
                     GROUP BY id_santri
                 ) r
             "), 'r.id_santri', '=', 'santris.id_santri')
+            ->leftJoin(DB::raw("
+                (
+                    SELECT DISTINCT ON (no_hp)
+                        no_hp,
+                        message as last_message
+                    FROM (
+                        SELECT 
+                            CASE 
+                                WHEN direction = 'outbound' THEN receiver
+                                ELSE sender
+                            END as no_hp,
+                            message,
+                            created_at
+                        FROM wa_messages
+                    ) x
+                    ORDER BY no_hp, created_at DESC
+                ) w
+            "), DB::raw("
+                CASE 
+                    WHEN santris.hp LIKE '08%' THEN '62' || SUBSTRING(santris.hp FROM 2)
+                    ELSE santris.hp
+                END
+            "), '=', 'w.no_hp')
             ->where('santris.ket', 'baru')
             ->when($this->search, function ($query) {
                 $query->where(function ($q) {
