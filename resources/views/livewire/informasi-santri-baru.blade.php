@@ -90,11 +90,13 @@
                                 <td class="px-6 py-3 text-gray-700 align-middle">{{ $row->lembaga }}</td>
                                 <td class="px-6 py-3 text-gray-700 align-middle">
                                     @if ($row->direction == 'outbound')
-                                        <span class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">
+                                        <span
+                                            class="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-md">
                                             <i class="fas fa-paper-plane mr-2"></i> {{ $row->last_message }}
                                         </span>
                                     @else
-                                        <span class="bg-red-100 text-red-700 text-xs font-semibold px-2 py-1 rounded-md">
+                                        <span
+                                            class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">
                                             <i class="fas fa-reply mr-2"></i> {{ $row->last_message }}
                                         </span>
                                     @endif

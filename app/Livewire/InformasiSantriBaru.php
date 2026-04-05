@@ -63,7 +63,8 @@ class InformasiSantriBaru extends Component
                 (
                     SELECT DISTINCT ON (no_hp)
                         no_hp,
-                        message as last_message
+                        message as last_message,
+                        direction as direction
                     FROM (
                         SELECT 
                             CASE 
@@ -71,6 +72,7 @@ class InformasiSantriBaru extends Component
                                 ELSE sender
                             END as no_hp,
                             message,
+                            direction,
                             created_at
                         FROM wa_messages
                     ) x
