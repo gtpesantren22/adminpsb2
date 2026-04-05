@@ -92,12 +92,19 @@
                                     @if ($row->direction == 'outbound')
                                         <span
                                             class="bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-1 rounded-md">
-                                            <i class="fas fa-paper-plane mr-2"></i> {{ $row->last_message }}
+                                            <i class="fas fa-paper-plane mr-2"></i>
+                                            {{ Str::limit($row->last_message, 30, '...') }}
+                                        </span>
+                                    @elseif($row->direction == 'inbound')
+                                        <span
+                                            class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">
+                                            <i class="fas fa-reply mr-2"></i>
+                                            {{ Str::limit($row->last_message, 30, '...') }}
                                         </span>
                                     @else
                                         <span
-                                            class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">
-                                            <i class="fas fa-reply mr-2"></i> {{ $row->last_message }}
+                                            class="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-md">
+                                            <i class="fas fa-clock mr-2"></i> Belum ada pesan
                                         </span>
                                     @endif
                                 </td>
