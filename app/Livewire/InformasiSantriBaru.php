@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Santri;
+use App\Models\WaMessage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -13,6 +14,10 @@ class InformasiSantriBaru extends Component
     use WithPagination;
     public $paginate = 10;
     public $search = '';
+    public $showChatModal = false;
+    public $chatHistories = [];
+    public $selectedSantri = null;
+    public $replyMessage = '';
     protected $paginationTheme = 'tailwind';
 
     public function updatedSearch()
@@ -151,35 +156,117 @@ class InformasiSantriBaru extends Component
     }
 
     // ---------------------------------------------------------------- //
+    // LOGIC CHAT HISTORY & REPLY WA
+    // ---------------------------------------------------------------- //
+
+    public function loadChat($id)
+    {
+        $this->selectedSantri = Santri::find($id);
+        if (!$this->selectedSantri) return;
+
+        // Fetch chat
+        $this->fetchChatHistory();
+
+        $this->showChatModal = true;
+    }
+
+    public function fetchChatHistory()
+    {
+        if (!$this->selectedSantri) return;
+        
+        $targetPhone = $this->selectedSantri->hp;
+        // Format to 62
+        $formattedPhone = preg_replace('/^0/', '62', $targetPhone);
+        $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
+
+        $this->chatHistories = WaMessage::where(function($q) use ($formattedPhone) {
+            $q->where('sender', $formattedPhone)
+              ->orWhere('receiver', $formattedPhone);
+        })->orderBy('created_at', 'asc')->get();
+    }
+
+    public function replyChat()
+    {
+        $this->validate([
+            'replyMessage' => 'required|string'
+        ]);
+
+        if ($this->selectedSantri) {
+            // Gunakan fungsi yang ada untuk mengirim pesan WA
+            $this->sendWhatsAppMessage($this->selectedSantri->hp, $this->replyMessage, 'Balasan Chat', 'person');
+            
+            // Mengosongkan text area setelah dikirim
+            $this->replyMessage = '';
+            
+            // Reload riwayat pesan
+            // Catatan: Jika WA API tidak instan, Anda bisa memasukkan pesan sementara ke array $this->chatHistories
+            $this->fetchChatHistory(); 
+        }
+    }
+
+    public function closeChatModal()
+    {
+        $this->showChatModal = false;
+        $this->selectedSantri = null;
+        $this->chatHistories = [];
+        $this->replyMessage = '';
+    }
+
+    // ---------------------------------------------------------------- //
     // LOGIC WA API SENDER
     // ---------------------------------------------------------------- //
 
-    private function sendWhatsAppMessage($phone, $message, $tipe)
+    private function sendWhatsAppMessage($target, $message, $tipeAlert, $tipeApi = 'person', $extraData = [])
     {
-        if (!$phone) {
-            $this->dispatch('swal', title: 'Gagal', text: 'Nomor HP santri tidak ditemukan/kosong.', icon: 'error');
+        if (!$target) {
+            $this->dispatch('swal', title: 'Gagal', text: 'Target (Nomor HP / ID Group) tidak valid/kosong.', icon: 'error');
             return;
         }
 
+        $payload = [
+            'apiKey' => env('API_KEY_WA'),
+        ];
 
-        // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
-        $phone = '085236924510';
-        $formattedPhone = preg_replace('/^0/', '62', $phone);
-        $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
+        $url = '';
 
-        // ==== PENGIRIMAN WA API (API Key di Body) ====
+        // 1. Send Person atau 2. Send Ad Reply
+        if ($tipeApi === 'person' || $tipeApi === 'ad_reply') {
+            // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
+            // Bisa di-uncomment "$target = '...';" di bawah ini jika ingin testing ke nomor spesifik
+            
+            // $target = '085236924510';
+            $formattedPhone = preg_replace('/^0/', '62', $target);
+            $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
+
+            $payload['phone'] = $formattedPhone;
+
+            if ($tipeApi === 'person') {
+                $url = env('URL_PERSON');
+                $payload['message'] = $message;
+            } elseif ($tipeApi === 'ad_reply') {
+                $url = env('URL_AD_REPLY'); // Pastikan env URL_AD_REPLY => endpoint ad_reply
+                $payload['title'] = $extraData['title'] ?? '';
+                $payload['desc'] = $extraData['desc'] ?? '';
+                $payload['body_message'] = $message;
+                $payload['url_file'] = $extraData['url_file'] ?? '';
+                $payload['url'] = $extraData['url'] ?? '';
+            }
+        } 
+        // 3. Send Group
+        elseif ($tipeApi === 'group') {
+            $url = env('URL_GROUP'); // Pastikan env URL_GROUP => endpoint group
+            $payload['id_group'] = $target;
+            $payload['message'] = $message;
+        }
+
+        // ==== PENGIRIMAN WA API ====
         try {
-            $response = Http::post(env('URL_PERSON'), [
-                'apiKey' => env('API_KEY_WA'),
-                'phone' => $formattedPhone,
-                'message' => $message,
-            ]);
-
+            $response = Http::post($url, $payload);
             $result = $response->json();
 
             // Cek status HTTP Request 200 DAN 'code' dari respons JSON API adalah 200
             if ($response->successful() && isset($result['code']) && $result['code'] == 200) {
-                $this->dispatch('swal', title: 'Berhasil!', text: "Pesan {$tipe} berhasil dikirim", icon: 'success');
+                $this->dispatch('swal', title: 'Berhasil!', text: "Pesan {$tipeAlert} berhasil dikirim", icon: 'success');
                 return;
             } else {
                 // Jika gagal, tampilkan pesan error asli dari API
