@@ -138,8 +138,12 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <!-- Cek Chat Button -->
                                         <button wire:click="loadChat('{{ $row->id_santri }}')"
-                                            class="inline-flex justify-center items-center px-4 py-2 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-sm focus:outline-none transition-colors">
-                                            <i class="fas fa-comments text-lg mr-2"></i>
+                                            class="inline-flex justify-center items-center w-10 h-10 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-sm focus:outline-none transition-colors"
+                                            wire:loading.attr="disabled"
+                                            wire:target="loadChat('{{ $row->id_santri }}')"
+                                            title="Cek Chat">
+                                            <i class="fas fa-comments text-lg" wire:loading.remove wire:target="loadChat('{{ $row->id_santri }}')"></i>
+                                            <i class="fas fa-spinner fa-spin text-lg" wire:loading wire:target="loadChat('{{ $row->id_santri }}')"></i>
                                         </button>
 
                                         <!-- Dropdown Alpine.js -->
@@ -214,7 +218,7 @@
                 </table>
 
                 <!-- FULL HEADER LOADING INDICATOR -->
-                <div wire:loading wire:target="search,paginate"
+                <div wire:loading wire:target="search,paginate,gotoPage,nextPage,previousPage"
                     class="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-10">
 
                     <div class="flex flex-col items-center space-y-4 mt-10">
@@ -248,8 +252,7 @@
             aria-modal="true" wire:ignore.self>
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <!-- Background overlay -->
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm"
-                    wire:click="closeChatModal"></div>
+                <div class="fixed inset-0" wire:click="closeChatModal"></div>
 
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
@@ -343,10 +346,8 @@
                             <button type="submit"
                                 class="w-11 h-11 flex-shrink-0 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none shadow-sm transition-transform active:scale-95 disabled:opacity-50"
                                 wire:loading.attr="disabled" wire:target="replyChat">
-                                <span wire:loading.remove wire:target="replyChat"><i
-                                        class="fas fa-paper-plane"></i></span>
-                                <span wire:loading wire:target="replyChat"><i
-                                        class="fas fa-spinner fa-spin"></i></span>
+                                <i class="fas fa-paper-plane" wire:loading.remove wire:target="replyChat"></i>
+                                <i class="fas fa-spinner fa-spin" wire:loading wire:target="replyChat"></i>
                             </button>
                         </form>
                     </div>

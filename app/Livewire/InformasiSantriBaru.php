@@ -192,15 +192,29 @@ class InformasiSantriBaru extends Component
         ]);
 
         if ($this->selectedSantri) {
-            // Gunakan fungsi yang ada untuk mengirim pesan WA
-            $this->sendWhatsAppMessage($this->selectedSantri->hp, $this->replyMessage, 'Balasan Chat', 'person');
+            $pesan = $this->replyMessage;
+
+            // Tambahkan sementara ke array agar terasa real-time (tanpa reload webhook)
+            $tempChat = new WaMessage();
+            $tempChat->message = $pesan;
+            $tempChat->direction = 'outbound';
+            $tempChat->created_at = now();
+            $tempChat->status = 'sent';
+            
+            if (is_array($this->chatHistories)) {
+                $this->chatHistories[] = $tempChat;
+            } else {
+                $this->chatHistories->push($tempChat);
+            }
+
+            // Kirim pesan WA (dengan flag is_reply true)
+            $this->sendWhatsAppMessage($this->selectedSantri->hp, $pesan, 'Balasan Chat', 'person', ['is_reply' => true]);
             
             // Mengosongkan text area setelah dikirim
             $this->replyMessage = '';
             
-            // Reload riwayat pesan
-            // Catatan: Jika WA API tidak instan, Anda bisa memasukkan pesan sementara ke array $this->chatHistories
-            $this->fetchChatHistory(); 
+            // Dispatch event livewire untuk trigger scroll otomatis jikalau dimau
+            $this->dispatch('chat-modal-opened');
         }
     }
 
@@ -266,7 +280,9 @@ class InformasiSantriBaru extends Component
 
             // Cek status HTTP Request 200 DAN 'code' dari respons JSON API adalah 200
             if ($response->successful() && isset($result['code']) && $result['code'] == 200) {
-                $this->dispatch('swal', title: 'Berhasil!', text: "Pesan {$tipeAlert} berhasil dikirim", icon: 'success');
+                if (!isset($extraData['is_reply']) || !$extraData['is_reply']) {
+                    $this->dispatch('swal', title: 'Berhasil!', text: "Pesan {$tipeAlert} berhasil dikirim", icon: 'success');
+                }
                 return;
             } else {
                 // Jika gagal, tampilkan pesan error asli dari API
