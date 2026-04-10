@@ -12,11 +12,12 @@
 
     <!-- Header Section -->
     <div class="glass-effect rounded-t-2xl p-6 text-center border-b border-gray-200">
-        <div class="inline-block p-3 rounded-full bg-green-50 mb-3 shadow-inner">
-            <i class="fas fa-tshirt text-3xl text-green-600"></i>
+        <div class="inline-block mb-3">
+            <img src="{{ asset('logo/pp.png') }}" alt="Logo PP" class="h-16 mx-auto object-contain drop-shadow-md">
         </div>
         <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Formulir Seragam</h1>
-        <p class="text-sm text-gray-500 mt-1">Pondok Pesantren Darul Lughah Wal Karomah</p>
+        <p class="text-sm font-bold text-green-700 mt-1 uppercase tracking-widest">PSB 2026/2027</p>
+        <p class="text-xs text-gray-500 mt-1">Pondok Pesantren Darul Lughah Wal Karomah</p>
     </div>
 
     <!-- Identitas Santri -->
@@ -135,13 +136,16 @@
                     </div>
 
                     @if($detailAtasan)
-                        <div class="mt-3 bg-gray-50 border border-gray-100 rounded p-3 animate-pulse-once">
-                            <p class="text-sm text-gray-600">
-                                <span class="font-medium">Lebar Dada:</span> <span class="text-gray-800 font-bold">{{ $detailAtasan->ld }}</span> cm
-                            </p>
-                            <p class="text-sm text-gray-600 mt-1">
-                                <span class="font-medium">Panjang:</span> <span class="text-gray-800 font-bold">{{ $detailAtasan->pj }}</span> cm
-                            </p>
+                        <div class="mt-3 bg-blue-50 border border-blue-200 rounded-lg p-4 shadow-inner">
+                            <h5 class="text-xs font-bold text-blue-800 uppercase mb-2 border-b border-blue-200 pb-1">Detail Ukuran Baju</h5>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm text-blue-700">Lebar Dada:</span> 
+                                <span class="text-blue-900 font-bold text-base">{{ $detailAtasan->ld }} <span class="text-xs font-normal">cm</span></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-blue-700">Panjang:</span> 
+                                <span class="text-blue-900 font-bold text-base">{{ $detailAtasan->pj }} <span class="text-xs font-normal">cm</span></span>
+                            </div>
                         </div>
                     @endif
                 </div>
@@ -162,13 +166,16 @@
                     </div>
 
                     @if($detailBawahan)
-                        <div class="mt-3 bg-gray-50 border border-gray-100 rounded p-3 animate-pulse-once">
-                            <p class="text-sm text-gray-600">
-                                <span class="font-medium">Lingkar Pinggang:</span> <span class="text-gray-800 font-bold">{{ $detailBawahan->lp }}</span> cm
-                            </p>
-                            <p class="text-sm text-gray-600 mt-1">
-                                <span class="font-medium">Panjang:</span> <span class="text-gray-800 font-bold">{{ $detailBawahan->pj }}</span> cm
-                            </p>
+                        <div class="mt-3 bg-indigo-50 border border-indigo-200 rounded-lg p-4 shadow-inner">
+                            <h5 class="text-xs font-bold text-indigo-800 uppercase mb-2 border-b border-indigo-200 pb-1">Detail Ukuran Bawahan</h5>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-sm text-indigo-700">Lingkar Pinggang:</span> 
+                                <span class="text-indigo-900 font-bold text-base">{{ $detailBawahan->lp }} <span class="text-xs font-normal">cm</span></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-indigo-700">Panjang:</span> 
+                                <span class="text-indigo-900 font-bold text-base">{{ $detailBawahan->pj }} <span class="text-xs font-normal">cm</span></span>
+                            </div>
                         </div>
                     @endif
                 </div>

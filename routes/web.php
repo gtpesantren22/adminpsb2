@@ -49,3 +49,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/form-seragam/{id}', App\Livewire\FormSeragam::class)
     ->name('seragam.form')
     ->middleware('signed');
+
+// Rekap Seragam
+Route::get('/rekap-seragam', App\Livewire\RekapSeragam::class)->name('seragam.rekap');
