@@ -13,7 +13,7 @@
     <!-- Header Section -->
     <div class="glass-effect rounded-t-2xl p-6 text-center border-b border-gray-200">
         <div class="inline-block mb-3">
-            <img src="{{ asset('logo/pp.png') }}" alt="Logo PP" class="h-16 mx-auto object-contain drop-shadow-md">
+            <img src="{{ asset('logo/logo pp.png') }}" alt="Logo PP" class="h-16 mx-auto object-contain drop-shadow-md">
         </div>
         <h1 class="text-2xl font-bold text-gray-800 tracking-tight">Formulir Seragam</h1>
         <p class="text-sm font-bold text-green-700 mt-1 uppercase tracking-widest">PSB 2026/2027</p>

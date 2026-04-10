@@ -2,7 +2,7 @@
     <div class="bg-white rounded-lg shadow sm:p-6 mb-6">
         <div class="flex flex-col sm:flex-row justify-between items-center bg-green-50 p-4 rounded border border-green-200 mb-6">
             <div class="flex items-center mb-4 sm:mb-0">
-                <img src="{{ asset('logo/pp.png') }}" alt="Logo PP" class="h-12 w-12 object-contain mr-4 drop-shadow-sm">
+                <img src="{{ asset('logo/logo pp.png') }}" alt="Logo PP" class="h-12 w-12 object-contain mr-4 drop-shadow-sm">
                 <div>
                     <h2 class="text-xl font-bold text-gray-800">Data Rekap Pengisian Seragam</h2>
                     <p class="text-xs text-gray-500 font-semibold tracking-wider">PSB 2026/2027 TAHUN PELAJARAN BARU</p>
