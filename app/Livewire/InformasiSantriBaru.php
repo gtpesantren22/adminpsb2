@@ -115,7 +115,7 @@ class InformasiSantriBaru extends Component
         $santri = Santri::find($id);
         if (!$santri) return;
 
-        $pesan = "Assalamualaikum Wr. Wb.\n\nKami dari panitia *PSB Pondok Pesantren Darul Lughah Wal Karomah* ingin mengkonfirmasikan apakah benar ini wali dari ananda *{$santri->nama}*?\n\nTerima Kasih.";
+        $pesan = "Assalamualaikum Wr. Wb.\n\nKami dari panitia *PSB Pondok Pesantren Darul Lughah Wal Karomah* ingin mengkonfirmasikan apakah benar ini wali dari ananda *{$santri->nama}*?\n\nTerima Kasih.\n\n#PSBDWK#PSB26/27";
         $this->sendWhatsAppMessage($santri->hp, $pesan, 'Konfirmasi Pendaftaran');
     }
 
@@ -142,8 +142,14 @@ class InformasiSantriBaru extends Component
         $santri = Santri::find($id);
         if (!$santri) return;
 
-        $pesan = "Halo Sdr/i *{$santri->nama}*,\n\nUndangan Group: Silakan bergabung ke *Grup WhatsApp Santri Baru* melalui tautan berikut:\n\n👉 [LINK_GROUP_DISINI]\n\nTerima Kasih.";
-        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Undangan Group');
+        $pesan = "Halo Sdr/i *{$santri->nama}*,\nUndangan Group: Silakan bergabung ke *Grup WhatsApp Santri Baru Tahun Pelajaran 2026/2027* melalui tautan berikut!\n\nTerima Kasih.\n\n#PSBDWK#PSB26/27";
+        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Undangan Group', 'ad_reply', [
+            'title' => 'Undangan Group',
+            'desc' => 'Grup WhatsApp Santri Baru',
+            'body_message' => $pesan,
+            'url' => 'https://chat.whatsapp.com/EWd6nVqbUjAAiEx6dJbuzH',
+            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
+        ]);
     }
 
     public function sendSeragam($id)
@@ -151,8 +157,14 @@ class InformasiSantriBaru extends Component
         $santri = Santri::find($id);
         if (!$santri) return;
 
-        $pesan = "Halo Sdr/i *{$santri->nama}*,\n\nBerikut adalah informasi terkait jadwal pengukuran dan lokasi pengambilan *Seragam / Kitab*.\n\nTerima Kasih.";
-        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Informasi Seragam');
+        $pesan = "Form Pengisian Seragam\n\nForm pengisian seragam untuk calon santri baru PP. Darul Lughah Wal Karomah 2025/2026 atas nama *{$santri->nama}*, alamat *{$santri->desa} - {$santri->kec} - {$santri->kab}*. Silahkan klik link diatas untuk mengisi/memilih ukuran seragam\n\n*Catatan:*\n- Seragam akan diberikan ketika santri sudah melunasi biaya Registrasi Ulang\n- Pastikan ukuran baju sesuai dengan ukuran santri.\n- Harap menghubungi no *082338631044 - Ust. Hadiryanto* sebelum pengambilan seragam\n- Pengambilan menunggu jadwal dari panitia\n\nTerima Kasih\n#PSBDWK#PSB26/27";
+        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Informasi Seragam', 'ad_reply', [
+            'title' => 'Link Pengisian Ukuran Seragam',
+            'desc' => 'Klik disini untuk mengisi ukuran seragam',
+            'body_message' => $pesan,
+            'url' => \Illuminate\Support\Facades\URL::signedRoute('seragam.form', ['id' => $santri->id_santri]),
+            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
+        ]);
     }
 
     // ---------------------------------------------------------------- //
@@ -173,15 +185,15 @@ class InformasiSantriBaru extends Component
     public function fetchChatHistory()
     {
         if (!$this->selectedSantri) return;
-        
+
         $targetPhone = $this->selectedSantri->hp;
         // Format to 62
         $formattedPhone = preg_replace('/^0/', '62', $targetPhone);
         $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
 
-        $this->chatHistories = WaMessage::where(function($q) use ($formattedPhone) {
+        $this->chatHistories = WaMessage::where(function ($q) use ($formattedPhone) {
             $q->where('sender', $formattedPhone)
-              ->orWhere('receiver', $formattedPhone);
+                ->orWhere('receiver', $formattedPhone);
         })->orderBy('created_at', 'asc')->get();
     }
 
@@ -200,7 +212,7 @@ class InformasiSantriBaru extends Component
             $tempChat->direction = 'outbound';
             $tempChat->created_at = now();
             $tempChat->status = 'sent';
-            
+
             if (is_array($this->chatHistories)) {
                 $this->chatHistories[] = $tempChat;
             } else {
@@ -209,10 +221,10 @@ class InformasiSantriBaru extends Component
 
             // Kirim pesan WA (dengan flag is_reply true)
             $this->sendWhatsAppMessage($this->selectedSantri->hp, $pesan, 'Balasan Chat', 'person', ['is_reply' => true]);
-            
+
             // Mengosongkan text area setelah dikirim
             $this->replyMessage = '';
-            
+
             // Dispatch event livewire untuk trigger scroll otomatis jikalau dimau
             $this->dispatch('chat-modal-opened');
         }
@@ -247,8 +259,8 @@ class InformasiSantriBaru extends Component
         if ($tipeApi === 'person' || $tipeApi === 'ad_reply') {
             // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
             // Bisa di-uncomment "$target = '...';" di bawah ini jika ingin testing ke nomor spesifik
-            
-            // $target = '085236924510';
+
+            $target = '085236924510';
             $formattedPhone = preg_replace('/^0/', '62', $target);
             $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
 
@@ -265,7 +277,7 @@ class InformasiSantriBaru extends Component
                 $payload['url_file'] = $extraData['url_file'] ?? '';
                 $payload['url'] = $extraData['url'] ?? '';
             }
-        } 
+        }
         // 3. Send Group
         elseif ($tipeApi === 'group') {
             $url = env('URL_GROUP'); // Pastikan env URL_GROUP => endpoint group

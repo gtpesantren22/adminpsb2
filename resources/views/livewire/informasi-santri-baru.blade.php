@@ -150,7 +150,7 @@
                                         <div x-data="{ open: false }" class="relative inline-block text-left">
 
                                             <button @click="open = !open" @click.away="open = false"
-                                                class="inline-flex justify-center items-center w-full px-4 py-2 text-sm font-semibold text-white bg-secondary-blue hover:bg-blue-700 rounded-lg shadow-sm focus:outline-none transition-colors">
+                                                class="inline-flex justify-center items-center w-full px-4 py-2 font-semibold text-white bg-secondary-blue hover:bg-blue-700 rounded-lg shadow-sm focus:outline-none transition-colors">
                                                 <i class="fab fa-whatsapp text-lg mr-2"></i> Pesan
                                                 <i class="fas fa-chevron-down ml-2 text-xs"></i>
                                             </button>

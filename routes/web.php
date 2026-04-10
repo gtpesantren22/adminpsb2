@@ -45,3 +45,7 @@ Route::middleware('auth')->group(function () {
         return redirect('/login');
     })->name('logout');
 });
+
+Route::get('/form-seragam/{id}', App\Livewire\FormSeragam::class)
+    ->name('seragam.form')
+    ->middleware('signed');
