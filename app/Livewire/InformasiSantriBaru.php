@@ -142,7 +142,7 @@ class InformasiSantriBaru extends Component
         $santri = Santri::find($id);
         if (!$santri) return;
 
-        $pesan = "Halo Sdr/i *{$santri->nama}*,\nUndangan Group: Silakan bergabung ke *Grup WhatsApp Santri Baru Tahun Pelajaran 2026/2027* melalui tautan berikut!\n\nTerima Kasih.\n\n#PSBDWK#PSB26/27";
+        $pesan = "Yth. Calon Santri Baru *{$santri->nama}*\nSilakan bergabung ke *Grup WhatsApp Santri Baru Tahun Pelajaran 2026/2027* melalui tautan berikut!\n_*Abaikan pesan ini jika anda sudah bergabung sebelumnya*_\n\nTerima Kasih.\n\n#PSBDWK#PSB26/27";
         $this->sendWhatsAppMessage($santri->hp, $pesan, 'Undangan Group', 'ad_reply', [
             'title' => 'Undangan Group',
             'desc' => 'Grup WhatsApp Santri Baru',
@@ -164,6 +164,10 @@ class InformasiSantriBaru extends Component
             'body_message' => $pesan,
             'url' => \Illuminate\Support\Facades\URL::signedRoute('seragam.form', ['id' => $santri->id_santri]),
             'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
+        ]);
+        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Informasi Seragam', 'media_local', [
+            'file_name' => $santri->jkl == 'Laki-laki' ? 'Putra.jpg' : 'Putri.jpg',
+            'caption' => 'Panduan ukuran seragam',
         ]);
     }
 
@@ -256,11 +260,11 @@ class InformasiSantriBaru extends Component
         $url = '';
 
         // 1. Send Person atau 2. Send Ad Reply
-        if ($tipeApi === 'person' || $tipeApi === 'ad_reply') {
+        if ($tipeApi === 'person' || $tipeApi === 'ad_reply' || $tipeApi === 'media_local') {
             // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
             // Bisa di-uncomment "$target = '...';" di bawah ini jika ingin testing ke nomor spesifik
 
-            $target = '085236924510';
+            // $target = '085236924510';
             $formattedPhone = preg_replace('/^0/', '62', $target);
             $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
 
@@ -276,6 +280,11 @@ class InformasiSantriBaru extends Component
                 $payload['body_message'] = $message;
                 $payload['url_file'] = $extraData['url_file'] ?? '';
                 $payload['url'] = $extraData['url'] ?? '';
+            } elseif ($tipeApi === 'media_local') {
+                $url = env('URL_MEDIA_LOCAL'); // Pastikan env URL_MEDIA_LOCAL => endpoint media_local
+                $payload['file_name'] = $extraData['file_name'];
+                $payload['as_document'] = 0;
+                $payload['caption'] =  $extraData['caption'];
             }
         }
         // 3. Send Group
@@ -284,6 +293,7 @@ class InformasiSantriBaru extends Component
             $payload['id_group'] = $target;
             $payload['message'] = $message;
         }
+
 
         // ==== PENGIRIMAN WA API ====
         try {
