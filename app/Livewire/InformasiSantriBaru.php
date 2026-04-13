@@ -302,6 +302,22 @@ class InformasiSantriBaru extends Component
 
             // Cek status HTTP Request 200 DAN 'code' dari respons JSON API adalah 200
             if ($response->successful() && isset($result['code']) && $result['code'] == 200) {
+                
+                // Simpan history chat langsung khusus untuk ad_reply tanpa menunggu webhook
+                if ($tipeApi === 'ad_reply') {
+                    $msgId = $result['data']['id'] ?? ($result['id'] ?? uniqid('out_'));
+                    \App\Models\WaMessage::create([
+                        'message_id' => $msgId,
+                        'sender'    => null,
+                        'receiver'  => $formattedPhone,
+                        'message'   => $message,
+                        'type'      => 'message',
+                        'direction' => 'outbound',
+                        'status'    => 'sent',
+                        'raw'       => ['manual_insert' => true, 'api_type' => 'ad_reply']
+                    ]);
+                }
+
                 if (!isset($extraData['is_reply']) || !$extraData['is_reply']) {
                     $this->dispatch('swal', title: 'Berhasil!', text: "Pesan {$tipeAlert} berhasil dikirim", icon: 'success');
                 }
