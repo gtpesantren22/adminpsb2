@@ -13,10 +13,8 @@ class WebhookController extends Controller
     {
         $data = $request->all();
 
-        // Cegah Base64 Image Thumbnail yang sangat panjang masuk ke log maupun storage DB
-        if (isset($data['results']['message']['extendedTextMessage']['contextInfo']['externalAdReply']['thumbnail'])) {
-            $data['results']['message']['extendedTextMessage']['contextInfo']['externalAdReply']['thumbnail'] = '[REMOVED_LARGE_BASE64_DATA]';
-        }
+        // Panggil fungsi rekursif untuk membersihkan semua array raksasa (Buffer byte array) dari payload
+        $data = $this->sanitizeLargePayload($data);
 
         Log::info('WHAPI RAW', $data);
 
@@ -106,5 +104,41 @@ class WebhookController extends Controller
 
             // TODO: kirim balasan via WHAPI API
         }
+    }
+
+    // =========================
+    // HELPER: Bersihkan Array Raksasa (Buffer 1.1MB dsb)
+    // =========================
+    private function sanitizeLargePayload($payload)
+    {
+        if (!is_array($payload)) {
+            return $payload;
+        }
+
+        foreach ($payload as $key => $val) {
+            if (is_array($val)) {
+                // Jika array ini sangat besar (lebih dari 50 item, biasanya byte array Buffer gambar ukurannya ribuan item)
+                // dan format key-nya berupa index numerik berturut-turut seperti "0", "1", "2"
+                if (count($val) > 100) {
+                    $payload[$key] = '[REMOVED_LARGE_BUFFER_SIZE_'.count($val).']';
+                    continue;
+                }
+                
+                // Jika mengandung nama thumbnail
+                if (stripos((string)$key, 'thumbnail') !== false && count($val) > 10) {
+                    $payload[$key] = '[REMOVED_THUMBNAIL_DATA]';
+                    continue;
+                }
+
+                // Teruskan rekursif ke anak array
+                $payload[$key] = $this->sanitizeLargePayload($val);
+            } 
+            elseif (is_string($val) && strlen($val) > 10000) {
+                // Jika ternyata dikirim dalam bentuk base64 string super panjang (> 10KB)
+                $payload[$key] = '[REMOVED_LARGE_BASE64_STRING]';
+            }
+        }
+
+        return $payload;
     }
 }
