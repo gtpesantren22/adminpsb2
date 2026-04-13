@@ -174,19 +174,19 @@
                                                     </button>
 
                                                     <!-- Item 2 -->
-                                                    <button
+                                                    {{-- <button
                                                         @click="open = false; confirmWaSend('sendPembayaran', '{{ $row->id_santri }}', 'Kirim Tagihan Pembayaran', '{{ $row->nama }}')"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-money-bill-wave w-4 text-center"></i>
                                                         Pembayaran
-                                                    </button>
+                                                    </button> --}}
 
                                                     <!-- Item 3 -->
-                                                    <button
+                                                    {{-- <button
                                                         @click="open = false; confirmWaSend('sendRegistrasi', '{{ $row->id_santri }}', 'Kirim Info Registrasi/Daftar Ulang', '{{ $row->nama }}')"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-id-card w-4 text-center"></i> Registrasi
-                                                    </button>
+                                                    </button> --}}
 
                                                     <!-- Item 4 -->
                                                     <button
