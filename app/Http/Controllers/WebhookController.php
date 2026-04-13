@@ -13,6 +13,11 @@ class WebhookController extends Controller
     {
         $data = $request->all();
 
+        // Cegah Base64 Image Thumbnail yang sangat panjang masuk ke log maupun storage DB
+        if (isset($data['results']['message']['extendedTextMessage']['contextInfo']['externalAdReply']['thumbnail'])) {
+            $data['results']['message']['extendedTextMessage']['contextInfo']['externalAdReply']['thumbnail'] = '[REMOVED_LARGE_BASE64_DATA]';
+        }
+
         Log::info('WHAPI RAW', $data);
 
         try {
@@ -25,10 +30,15 @@ class WebhookController extends Controller
             // =========================
             if ($type === 'message') {
 
-                $messageId = $results['id'] ?? null;
-                $body      = $results['body'] ?? null;
+                // Tangkap ID Pesan
+                $messageId = $results['key']['id'] ?? ($results['id'] ?? null);
+                
+                // Tangkap Body Pesan (bervariasi lokasinya antara pesan normal dan ad_reply)
+                $body = $results['body'] ?? 
+                        ($results['message']['extendedTextMessage']['text'] ?? 
+                        ($results['message']['conversation'] ?? null));
 
-                $fromMe    = $results['fromMe'] ?? false;
+                $fromMe    = $results['key']['fromMe'] ?? ($results['fromMe'] ?? false);
 
                 $remoteJid = $results['key']['remoteJid'] ?? null;
 
