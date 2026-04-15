@@ -168,7 +168,7 @@
                                                 <div class="py-1">
                                                     <!-- Item 1 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendKonfirmasi', '{{ $row->id_santri }}', 'Kirim Konfirmasi Pendaftaran', '{{ $row->nama }}')"
+                                                        @click="open = false; confirmWaSend('sendKonfirmasi', {{ @js($row->id_santri) }}, 'Kirim Konfirmasi Pendaftaran', {{ @js($row->nama) }})"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-check-circle w-4 text-center"></i> Konfirmasi
                                                     </button>
@@ -190,14 +190,14 @@
 
                                                     <!-- Item 4 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendGroup', '{{ $row->id_santri }}', 'Kirim Undangan WA Group', '{{ $row->nama }}')"
+                                                        @click="open = false; confirmWaSend('sendGroup', {{ @js($row->id_santri) }}, 'Kirim Undangan WA Group', {{ @js($row->nama) }})"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fab fa-whatsapp w-4 text-center"></i> Join Group
                                                     </button>
 
                                                     <!-- Item 5 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendSeragam', '{{ $row->id_santri }}', 'Kirim Jadwal Seragam', '{{ $row->nama }}')"
+                                                        @click="open = false; confirmWaSend('sendSeragam', {{ @js($row->id_santri) }}, 'Kirim Jadwal Seragam', {{ @js($row->nama) }})"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-tshirt w-4 text-center"></i> Info Seragam
                                                     </button>
