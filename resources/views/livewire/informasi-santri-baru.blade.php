@@ -168,14 +168,22 @@
                                                 <div class="py-1">
                                                     <!-- Item 1 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendKonfirmasi', {{ @js($row->id_santri) }}, 'Kirim Konfirmasi Pendaftaran', {{ @js($row->nama) }})"
+                                                        data-action="sendKonfirmasi"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Konfirmasi Pendaftaran"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-check-circle w-4 text-center"></i> Konfirmasi
                                                     </button>
 
                                                     <!-- Item 2 -->
                                                     {{-- <button
-                                                        @click="open = false; confirmWaSend('sendPembayaran', '{{ $row->id_santri }}', 'Kirim Tagihan Pembayaran', '{{ $row->nama }}')"
+                                                        data-action="sendPembayaran"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Tagihan Pembayaran"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-money-bill-wave w-4 text-center"></i>
                                                         Pembayaran
@@ -183,21 +191,33 @@
 
                                                     <!-- Item 3 -->
                                                     {{-- <button
-                                                        @click="open = false; confirmWaSend('sendRegistrasi', '{{ $row->id_santri }}', 'Kirim Info Registrasi/Daftar Ulang', '{{ $row->nama }}')"
+                                                        data-action="sendRegistrasi"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Info Registrasi/Daftar Ulang"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-orange-50 hover:text-orange-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-id-card w-4 text-center"></i> Registrasi
                                                     </button> --}}
 
                                                     <!-- Item 4 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendGroup', {{ @js($row->id_santri) }}, 'Kirim Undangan WA Group', {{ @js($row->nama) }})"
+                                                        data-action="sendGroup"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Undangan WA Group"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
                                                         <i class="fab fa-whatsapp w-4 text-center"></i> Join Group
                                                     </button>
 
                                                     <!-- Item 5 -->
                                                     <button
-                                                        @click="open = false; confirmWaSend('sendSeragam', {{ @js($row->id_santri) }}, 'Kirim Jadwal Seragam', {{ @js($row->nama) }})"
+                                                        data-action="sendSeragam"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Jadwal Seragam"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-tshirt w-4 text-center"></i> Info Seragam
                                                     </button>
