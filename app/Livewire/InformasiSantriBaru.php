@@ -271,7 +271,7 @@ class InformasiSantriBaru extends Component
             // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
             // Bisa di-uncomment "$target = '...';" di bawah ini jika ingin testing ke nomor spesifik
 
-            $target = '085236924510';
+            // $target = '085236924510';
             $formattedPhone = preg_replace('/^0/', '62', $target);
             $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
 
