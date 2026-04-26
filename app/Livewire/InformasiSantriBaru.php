@@ -165,7 +165,14 @@ class InformasiSantriBaru extends Component
             'url' => \Illuminate\Support\Facades\URL::signedRoute('seragam.form', ['id' => $santri->id_santri]),
             'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
         ]);
-        $this->sendWhatsAppMessage($santri->hp, $pesan, 'Informasi Seragam', 'media_local', [
+    }
+
+    public function sendPanduanSeragam($id)
+    {
+        $santri = Santri::find($id);
+        if (!$santri) return;
+
+        $this->sendWhatsAppMessage($santri->hp, 'Panduan ukuran seragam', 'Informasi Seragam', 'media_local', [
             'file_name' => $santri->jkl == 'Laki-laki' ? 'Putra.jpg' : 'Putri.jpg',
             'caption' => 'Panduan ukuran seragam',
         ]);
@@ -264,7 +271,7 @@ class InformasiSantriBaru extends Component
             // Format nomor HP (ubah awalan 0 atau +62 menjadi 62)
             // Bisa di-uncomment "$target = '...';" di bawah ini jika ingin testing ke nomor spesifik
 
-            // $target = '085236924510';
+            $target = '085236924510';
             $formattedPhone = preg_replace('/^0/', '62', $target);
             $formattedPhone = preg_replace('/^\+62/', '62', $formattedPhone);
 
@@ -302,7 +309,7 @@ class InformasiSantriBaru extends Component
 
             // Cek status HTTP Request 200 DAN 'code' dari respons JSON API adalah 200
             if ($response->successful() && isset($result['code']) && $result['code'] == 200) {
-                
+
                 // Simpan history chat langsung khusus untuk ad_reply tanpa menunggu webhook
                 if ($tipeApi === 'ad_reply') {
                     $msgId = $result['data']['id'] ?? ($result['id'] ?? uniqid('out_'));

@@ -139,11 +139,12 @@
                                         <!-- Cek Chat Button -->
                                         <button wire:click="loadChat('{{ $row->id_santri }}')"
                                             class="inline-flex justify-center items-center w-10 h-10 text-sm font-semibold text-white bg-green-500 hover:bg-green-600 rounded-lg shadow-sm focus:outline-none transition-colors"
-                                            wire:loading.attr="disabled"
-                                            wire:target="loadChat('{{ $row->id_santri }}')"
+                                            wire:loading.attr="disabled" wire:target="loadChat('{{ $row->id_santri }}')"
                                             title="Cek Chat">
-                                            <i class="fas fa-comments text-lg" wire:loading.remove wire:target="loadChat('{{ $row->id_santri }}')"></i>
-                                            <i class="fas fa-spinner fa-spin text-lg" wire:loading wire:target="loadChat('{{ $row->id_santri }}')"></i>
+                                            <i class="fas fa-comments text-lg" wire:loading.remove
+                                                wire:target="loadChat('{{ $row->id_santri }}')"></i>
+                                            <i class="fas fa-spinner fa-spin text-lg" wire:loading
+                                                wire:target="loadChat('{{ $row->id_santri }}')"></i>
                                         </button>
 
                                         <!-- Dropdown Alpine.js -->
@@ -167,8 +168,7 @@
 
                                                 <div class="py-1">
                                                     <!-- Item 1 -->
-                                                    <button
-                                                        data-action="sendKonfirmasi"
+                                                    <button data-action="sendKonfirmasi"
                                                         data-id="{{ $row->id_santri }}"
                                                         data-nama="{{ $row->nama }}"
                                                         data-title="Kirim Konfirmasi Pendaftaran"
@@ -201,9 +201,7 @@
                                                     </button> --}}
 
                                                     <!-- Item 4 -->
-                                                    <button
-                                                        data-action="sendGroup"
-                                                        data-id="{{ $row->id_santri }}"
+                                                    <button data-action="sendGroup" data-id="{{ $row->id_santri }}"
                                                         data-nama="{{ $row->nama }}"
                                                         data-title="Kirim Undangan WA Group"
                                                         @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
@@ -212,14 +210,22 @@
                                                     </button>
 
                                                     <!-- Item 5 -->
-                                                    <button
-                                                        data-action="sendSeragam"
-                                                        data-id="{{ $row->id_santri }}"
-                                                        data-nama="{{ $row->nama }}"
-                                                        data-title="Kirim Jadwal Seragam"
+                                                    <button data-action="sendSeragam" data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}" data-title="Kirim Link Seragam"
                                                         @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
                                                         class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-3 transition-colors">
                                                         <i class="fas fa-tshirt w-4 text-center"></i> Info Seragam
+                                                    </button>
+
+                                                    <!-- Item 6 -->
+                                                    <button data-action="sendPanduanSeragam"
+                                                        data-id="{{ $row->id_santri }}"
+                                                        data-nama="{{ $row->nama }}"
+                                                        data-title="Kirim Panduan Seragam"
+                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
+                                                        class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-700 flex items-center gap-3 transition-colors">
+                                                        <i class="fas fa-info-circle w-4 text-center"></i> Panduan
+                                                        Seragam
                                                     </button>
                                                 </div>
                                             </div>
@@ -244,7 +250,8 @@
                     <div class="flex flex-col items-center space-y-4 mt-10">
                         <svg class="animate-spin h-12 w-12 text-secondary-blue mt-1/2" viewBox="0 0 50 50">
                             <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor"
-                                stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 31.4" opacity="0.25" />
+                                stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 31.4"
+                                opacity="0.25" />
                             <circle cx="25" cy="25" r="20" fill="none" stroke="currentColor"
                                 stroke-width="4" stroke-linecap="round" stroke-dasharray="31.4 94.2" />
                         </svg>
