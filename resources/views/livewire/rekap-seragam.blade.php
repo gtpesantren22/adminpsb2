@@ -44,6 +44,8 @@
                         <th scope="col" class="px-6 py-3 text-center">Atasan (Baju)</th>
                         <th scope="col" class="px-6 py-3 text-center">Bawahan (Celana/Rok)</th>
                         <th scope="col" class="px-6 py-3 text-center">Songkok</th>
+                        <th scope="col" class="px-6 py-3 text-right">Jumlah Tanggungan</th>
+                        <th scope="col" class="px-6 py-3 text-right">Sudah Dibayar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,10 +74,16 @@
                                     <span class="text-gray-400">-</span>
                                 @endif
                             </td>
+                            <td class="px-6 py-4 text-right font-medium text-gray-700">
+                                Rp {{ number_format($data->total_tanggungan, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4 text-right font-medium {{ $data->total_bayar >= $data->total_tanggungan ? 'text-green-600' : 'text-blue-600' }}">
+                                Rp {{ number_format($data->total_bayar, 0, ',', '.') }}
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                            <td colspan="9" class="px-6 py-10 text-center text-gray-500">
                                 <div class="flex flex-col items-center">
                                     <i class="fas fa-folder-open text-4xl mb-3 text-gray-300"></i>
                                     <p>Belum ada data pengisian seragam yang ditemukan.</p>
