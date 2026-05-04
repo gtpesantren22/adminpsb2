@@ -18,7 +18,7 @@
 
 <body class="text-gray-800 font-sans antialiased min-h-screen pb-10">
 
-    <div class="max-w-6xl mx-auto w-full pt-8 px-4">
+    <div class="w-full max-w-[98%] mx-auto pt-8 px-4 sm:px-6 lg:px-8">
         {{ $slot }}
     </div>
 

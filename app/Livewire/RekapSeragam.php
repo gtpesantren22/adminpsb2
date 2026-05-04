@@ -36,6 +36,10 @@ class RekapSeragam extends Component
             ->select(
                 'seragams.id',
                 'santris.nama',
+                'santris.hp',
+                'santris.desa',
+                'santris.kec',
+                'santris.kab',
                 'santris.jkl',
                 'santris.lembaga',
                 'seragams.atasan',

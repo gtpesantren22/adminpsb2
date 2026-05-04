@@ -38,7 +38,9 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
                     <tr>
                         <th scope="col" class="px-6 py-3 w-16">No</th>
-                        <th scope="col" class="px-6 py-3">Nama Santri</th>
+                        <th scope="col" class="px-6 py-3 min-w-[200px]">Nama Santri</th>
+                        <th scope="col" class="px-6 py-3">No. HP</th>
+                        <th scope="col" class="px-6 py-3 min-w-[250px]">Alamat</th>
                         <th scope="col" class="px-6 py-3">Jkl</th>
                         <th scope="col" class="px-6 py-3">Lembaga</th>
                         <th scope="col" class="px-6 py-3 text-center">Atasan (Baju)</th>
@@ -53,6 +55,10 @@
                         <tr class="bg-white border-b hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 font-medium text-gray-900">{{ $datas->firstItem() + $index }}</td>
                             <td class="px-6 py-4 font-bold text-gray-800">{{ $data->nama }}</td>
+                            <td class="px-6 py-4 font-medium text-gray-700 whitespace-nowrap">{{ $data->hp ?? '-' }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600">
+                                {{ collect([$data->desa, $data->kec, $data->kab])->filter()->implode(', ') }}
+                            </td>
                             <td class="px-6 py-4">
                                 @if(strtoupper(substr($data->jkl, 0, 1)) === 'L')
                                     <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-blue-400">L</span>
@@ -83,7 +89,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="9" class="px-6 py-10 text-center text-gray-500">
+                            <td colspan="11" class="px-6 py-10 text-center text-gray-500">
                                 <div class="flex flex-col items-center">
                                     <i class="fas fa-folder-open text-4xl mb-3 text-gray-300"></i>
                                     <p>Belum ada data pengisian seragam yang ditemukan.</p>
