@@ -148,7 +148,7 @@ class InformasiSantriBaru extends Component
             'desc' => 'Grup WhatsApp Santri Baru',
             'body_message' => $pesan,
             'url' => 'https://chat.whatsapp.com/EWd6nVqbUjAAiEx6dJbuzH',
-            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
+            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan1.jpg'
         ]);
     }
 
@@ -163,7 +163,7 @@ class InformasiSantriBaru extends Component
             'desc' => 'Klik disini untuk mengisi ukuran seragam',
             'body_message' => $pesan,
             'url' => \Illuminate\Support\Facades\URL::signedRoute('seragam.form', ['id' => $santri->id_santri]),
-            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan.jpg'
+            'url_file' => 'https://psb26.ppdwk.com/demo/dist/img/depan1.jpg'
         ]);
     }
 
