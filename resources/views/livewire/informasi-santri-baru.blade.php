@@ -69,6 +69,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lembaga</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Message
                             </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status Seragam</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registrasi</th>
                             
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase w-48">Aksi
@@ -181,17 +182,21 @@
                                                         <i class="fas fa-check-circle w-4 text-center"></i> Konfirmasi
                                                     </button>
 
-                                                    <!-- Item 2 -->
-                                                    {{-- <button
-                                                        data-action="sendPembayaran"
+                                                    <!-- Item 3: Copy Seragam URL -->
+                                                    <button data-action="copySeragamUrl"
                                                         data-id="{{ $row->id_santri }}"
-                                                        data-nama="{{ $row->nama }}"
-                                                        data-title="Kirim Tagihan Pembayaran"
-                                                        @click="open = false; confirmWaSend($el.dataset.action, $el.dataset.id, $el.dataset.title, $el.dataset.nama)"
-                                                        class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
-                                                        <i class="fas fa-money-bill-wave w-4 text-center"></i>
-                                                        Pembayaran
-                                                    </button> --}}
+                                                        x-on:click="
+                                                            var temp = document.createElement('textarea');
+                                                            temp.value = '{{ url('seragam/form/' . $row->id_santri) }}';
+                                                            document.body.appendChild(temp);
+                                                            temp.select();
+                                                            document.execCommand('copy');
+                                                            document.body.removeChild(temp);
+                                                            alert('Link URL seragam telah disalin ke clipboard');
+                                                        "
+                                                        class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 border-b border-gray-100 flex items-center gap-3 transition-colors">
+                                                        <i class="fas fa-link w-4 text-center"></i> Salin Link Seragam
+                                                    </button>
 
                                                     <!-- Item 3 -->
                                                     {{-- <button
