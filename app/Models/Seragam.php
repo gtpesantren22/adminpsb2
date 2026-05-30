@@ -11,6 +11,7 @@ class Seragam extends Model
         'atasan',
         'bawahan',
         'songkok',
+        'status',
     ];
 
     public function santri()

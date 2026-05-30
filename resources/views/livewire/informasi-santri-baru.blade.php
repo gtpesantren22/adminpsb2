@@ -70,7 +70,7 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Last Message
                             </th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Registrasi</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Seragam</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase w-48">Aksi
                                 Pengiriman</th>
                         </tr>
@@ -128,10 +128,12 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-3 align-middle">
-                                    <span
-                                        class="bg-green-100 text-green-700 text-xs font-semibold px-2 py-1 rounded-md">
-                                        Terverifikasi
-                                    </span>
+                                    @if($row->seragam_status === 'diambil')
+                                        <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">Diambil</span>
+                                    @else
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded">Belum</span>
+                                        <button wire:click="markSeragamDiambil('{{ $row->id }}')" class="ml-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2 py-1">Tandai Diambil</button>
+                                    @endif
                                 </td>
 
                                 <td class="px-6 py-3 align-middle text-center">

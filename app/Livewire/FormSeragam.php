@@ -24,6 +24,7 @@ class FormSeragam extends Component
     public $listBawahan = [];
 
     // Details (for display when selected)
+    public $status = '';
     public $detailAtasan = null;
     public $detailBawahan = null;
 
@@ -91,11 +92,13 @@ class FormSeragam extends Component
         $this->validate([
             'atasan_id' => 'required',
             'bawahan_id' => 'required',
-            'songkok' => strtoupper(substr($this->santri->jkl, 0, 1)) === 'L' ? 'required' : 'nullable'
+            'songkok' => strtoupper(substr($this->santri->jkl, 0, 1)) === 'L' ? 'required' : 'nullable',
+            'status' => 'required|in:belum,diambil'
         ], [
             'atasan_id.required' => 'Mhn pilih ukuran baju atas (baju).',
             'bawahan_id.required' => 'Mhn pilih ukuran baju bawah (celana/rok).',
-            'songkok.required' => 'Mhn isi ukuran songkok untuk santri laki-laki.'
+            'songkok.required' => 'Mhn isi ukuran songkok untuk santri laki-laki.',
+            'status.required' => 'Pilih status pengambilan seragam.'
         ]);
 
         $jklPrefix = strtoupper(substr($this->santri->jkl, 0, 1));
@@ -108,6 +111,7 @@ class FormSeragam extends Component
             'atasan' => $atasanModel ? $atasanModel->ukuran : '-',
             'bawahan' => $bawahanModel ? $bawahanModel->ukuran : '-',
             'songkok' => $jklPrefix === 'L' ? $this->songkok : '0',
+            'status' => $this->status
         ]);
 
         $this->isSubmitted = true;

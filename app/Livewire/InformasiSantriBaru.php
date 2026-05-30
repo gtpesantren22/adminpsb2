@@ -28,6 +28,7 @@ class InformasiSantriBaru extends Component
     public function render()
     {
         $datas = Santri::query()
+            ->leftJoin('seragams', 'santris.id_santri', '=', 'seragams.id_santri')
             ->select([
                 'santris.id_santri',
                 'santris.nama',
@@ -39,6 +40,7 @@ class InformasiSantriBaru extends Component
                 DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
                 DB::raw('COALESCE(r.total_bayar, 0) as total_bayar'),
                 DB::raw("COALESCE(w.last_message, '-') as last_message, w.direction as direction"),
+                DB::raw('COALESCE(seragams.status, "belum") as seragam_status'),
             ])
             ->leftJoin(DB::raw("
                 (
@@ -109,6 +111,16 @@ class InformasiSantriBaru extends Component
     // ---------------------------------------------------------------- //
     // AKSI PENGIRIMAN PESAN
     // ---------------------------------------------------------------- //
+
+    public function markSeragamDiambil($id)
+    {
+        \App\Models\Seragam::where('id_santri', $id)->update(['status' => 'diambil']);
+        $this->dispatch('swal', [
+            'title' => 'Berhasil!',
+            'text' => 'Status seragam ditandai sebagai diambil.',
+            'icon' => 'success',
+        ]);
+    }
 
     public function sendKonfirmasi($id)
     {
