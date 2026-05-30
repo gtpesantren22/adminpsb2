@@ -48,6 +48,7 @@
                         <th scope="col" class="px-6 py-3 text-center">Songkok</th>
                         <th scope="col" class="px-6 py-3 text-right">Jumlah Tanggungan</th>
                         <th scope="col" class="px-6 py-3 text-right">Sudah Dibayar</th>
+<th scope="col" class="px-6 py-3 text-center">Seragam</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,10 +87,18 @@
                             <td class="px-6 py-4 text-right font-medium {{ $data->total_bayar >= $data->total_tanggungan ? 'text-green-600' : 'text-blue-600' }}">
                                 Rp {{ number_format($data->total_bayar, 0, ',', '.') }}
                             </td>
+                            <td class="px-6 py-4 text-center">
+                                @if($data->seragam_status === 'diambil')
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">Diambil</span>
+                                @else
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded">Belum</span>
+                                    <button wire:click="markSeragamDiambil('{{ $data->santri_id }}')" class="ml-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2 py-1">Tandai Diambil</button>
+                                @endif
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="11" class="px-6 py-10 text-center text-gray-500">
+                            <td colspan="12" class="px-6 py-10 text-center text-gray-500">
                                 <div class="flex flex-col items-center">
                                     <i class="fas fa-folder-open text-4xl mb-3 text-gray-300"></i>
                                     <p>Belum ada data pengisian seragam yang ditemukan.</p>

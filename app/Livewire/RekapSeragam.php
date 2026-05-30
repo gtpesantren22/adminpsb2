@@ -29,6 +29,17 @@ class RekapSeragam extends Component
         $this->resetPage();
     }
 
+    public function markSeragamDiambil($id)
+    {
+        // Update the status of the seragam record for the given santri id
+        Seragam::where('id_santri', $id)->update(['status' => 'diambil']);
+        $this->dispatch('swal', [
+            'title' => 'Berhasil!',
+            'text' => 'Status seragam ditandai sebagai diambil.',
+            'icon' => 'success',
+        ]);
+    }
+
     public function render()
     {
         $datas = Seragam::query()
@@ -45,8 +56,8 @@ class RekapSeragam extends Component
                 'seragams.atasan',
                 'seragams.bawahan',
                 'seragams.songkok',
-                'seragams.created_at',
-                DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
+                'santris.id_santri as santri_id',
+                'seragams.status as seragam_status',
                 DB::raw('COALESCE(r.total_bayar, 0) as total_bayar')
             )
             ->leftJoin(DB::raw("
