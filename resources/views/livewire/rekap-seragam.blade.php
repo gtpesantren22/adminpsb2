@@ -91,8 +91,10 @@
                                 @if($data->seragam_status === 'diambil')
                                     <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">Diambil</span>
                                 @else
-                                    <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded">Belum</span>
-                                    <button wire:click="markSeragamDiambil('{{ $data->santri_id }}')" class="ml-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2 py-1">Tandai Diambil</button>
+                                    <label class="inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" x-on:click="if(confirm('Apakah Anda yakin menandai seragam sudah diambil?')) $wire.markSeragamDiambil('{{ $data->santri_id }}')" class="form-checkbox text-indigo-600" />
+                                        <span class="ml-2 text-xs text-gray-800">Belum</span>
+                                    </label>
                                 @endif
                             </td>
                         </tr>

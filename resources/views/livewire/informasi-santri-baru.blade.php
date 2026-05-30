@@ -108,6 +108,16 @@
                                         </span>
                                     @endif
                                 </td>
+                                <td class="px-6 py-3 text-center align-middle">
+                                    <div class="flex items-center justify-center gap-2">
+                                        @if ($row->seragam_status === 'diambil')
+                                            <span class="px-3 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">Diambil</span>
+                                        @else
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-800 text-xs font-semibold rounded">Belum</span>
+                                            <button x-on:click="if(confirm('Apakah Anda yakin menandai seragam sudah diambil?')) $wire.markSeragamDiambil('{{ $row->id_santri }}')" class="ml-2 text-sm text-white bg-indigo-600 hover:bg-indigo-700 rounded px-2 py-1">Tandai</button>
+                                        @endif
+                                    </div>
+                                </td>
                                 <td class="px-6 py-3 text-gray-700 align-middle">
                                     @php
                                         $prosentase =
