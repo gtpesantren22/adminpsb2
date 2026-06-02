@@ -17,14 +17,14 @@ class FormSeragam extends Component
     // Form Inputs
     public $atasan_id = '';
     public $bawahan_id = '';
-    public $songkok = '0';
+    public $songkok = '';
 
     // Collections
     public $listAtasan = [];
     public $listBawahan = [];
 
     // Details (for display when selected)
-    public $status = '';
+    public $status = 'belum';
     public $detailAtasan = null;
     public $detailBawahan = null;
 
