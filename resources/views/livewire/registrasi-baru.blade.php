@@ -164,7 +164,7 @@
                                             'Nama' => $userById->nama ?? '-',
                                             'Tempat, Tgl Lahir' =>
                                                 ($userById->tempat ?? '-') . ', ' . ($userById->tanggal ?? '-'),
-                                            'Jenis Kelamin' => $userById->jkl == 'L' ? 'Laki-laki' : 'Perempuan',
+                                            'Jenis Kelamin' => $userById->jkl,
                                             'Alamat' =>
                                                 $userById->desa . ' - ' . $userById->kec . ' - ' . $userById->kab ??
                                                 '-',
