@@ -60,7 +60,7 @@ return new class extends Migration
 
             // KONTAK & AKUN
             $table->string('hp', 15)->nullable();
-            $table->string('username', 100)->unique();
+            $table->string('username', 100)->nullable();
             $table->string('password', 100);
 
             // STATUS
