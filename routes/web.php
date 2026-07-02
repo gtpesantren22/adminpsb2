@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/informasi-santri-baru', function () {
         return view('main.informasi_santri_baru');
     });
+    Route::get('/dekosan', function () {
+        return view('main.dekosan');
+    });
 
     Route::get('/logout', function () {
         auth()->logout();

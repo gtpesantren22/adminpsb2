@@ -176,6 +176,15 @@
                             </ul>
                         </details>
                     </li>
+                    <li>
+                        <a href="/dekosan" wire:navigate
+                            class="sidebar-link flex items-center px-4 py-3 rounded-lg transition duration-150
+                            {{ request()->is('dekosan*') ? 'bg-secondary-blue text-white' : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}
+                            ">
+                            <i class="fas fa-hotel w-6 text-center mr-3"></i>
+                            <span>Dekosan</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

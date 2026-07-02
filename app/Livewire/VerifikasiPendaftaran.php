@@ -20,10 +20,6 @@ class VerifikasiPendaftaran extends Component
     public int $perPage = 500;
     public int $page = 1;
 
-    public int $total = 0;
-    public array $rows = [];
-    public bool $loading = false;
-
     public $userById = null;
     public $modalVerval = false;
     public $cekSantri = null;
@@ -33,16 +29,9 @@ class VerifikasiPendaftaran extends Component
         'search' => ['except' => ''],
     ];
 
-    public function mount()
-    {
-        $this->loadData();
-        // dd($this->loadData());
-    }
-
     public function updatedSearch()
     {
         $this->page = 1;
-        $this->loadData();
     }
 
     // public function updatedPerPage()
@@ -53,7 +42,6 @@ class VerifikasiPendaftaran extends Component
 
     public function loadData()
     {
-        $this->loading = true;
         $nikSantri = Santri::pluck('id_santri')->flip();
         $response = ApiService::datatables([
             'data' => 'pendaftar',
@@ -65,7 +53,7 @@ class VerifikasiPendaftaran extends Component
             'status' => 1,
         ]);
 
-        $this->rows = collect($response['data']['data'] ?? [])
+        return collect($response['data']['data'] ?? [])
             ->whereNotNull('dok_transfer')   // ⬅️ FILTER DI SINI
             ->where('lembaga.nama', '!=', 'RA DARUL LUGHAH WAL KAROMAH')
             ->where('lembaga.nama', '!=', 'MI DARUL LUGHAH WAL KAROMAH')
@@ -75,10 +63,6 @@ class VerifikasiPendaftaran extends Component
             })
             ->values()                       // ⬅️ RESET INDEX
             ->toArray();
-
-        $this->total = count($this->rows);
-
-        $this->loading = false;
     }
 
     public function detail($nik)
@@ -205,7 +189,6 @@ class VerifikasiPendaftaran extends Component
             confirmButtonText: 'Ok'
         );
         $this->modalVerval = false;
-        $this->loadData();
     }
 
     private function getNominalByGelombang($gelombang): int
@@ -270,6 +253,8 @@ class VerifikasiPendaftaran extends Component
 
     public function render()
     {
-        return view('livewire.verifikasi-pendaftaran');
+        return view('livewire.verifikasi-pendaftaran', [
+            'rows' => $this->loadData(),
+        ]);
     }
 }

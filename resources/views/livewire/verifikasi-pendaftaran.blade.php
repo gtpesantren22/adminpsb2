@@ -266,13 +266,13 @@
                                                 ($userById['tanggal_lahir_indo'] ?? '-'),
                                             'Jenis Kelamin' =>
                                                 $userById['jenis_kelamin'] == 'L' ? 'Laki-laki' : 'Perempuan',
-                                            'Alamat' =>
-                                                $row['wilayah']['nama'] .
-                                                    ' - ' .
-                                                    $row['wilayah']['parrent_recursive']['nama'] .
-                                                    ' - ' .
-                                                    $row['wilayah']['parrent_recursive']['parrent_recursive']['nama'] ??
-                                                '-',
+                                            'Alamat' => isset($userById['wilayah']) ?
+                                                (($userById['wilayah']['nama'] ?? '-') .
+                                                 ' - ' .
+                                                 ($userById['wilayah']['parrent_recursive']['nama'] ?? '-') .
+                                                 ' - ' .
+                                                 ($userById['wilayah']['parrent_recursive']['parrent_recursive']['nama'] ?? '-'))
+                                                : '-',
                                             'Nama Bapak' => $userById['nama_ayah'] ?? '-',
                                             'Nama Ibu' => $userById['nama_ibu'] ?? '-',
                                             'Lembaga' => $userById['lembaga']['nama'] ?? '-',
