@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/dekosan', function () {
         return view('main.dekosan');
     });
+    Route::get('/data-registrasi', function () {
+        return view('main.data_registrasi');
+    });
 
     Route::get('/logout', function () {
         auth()->logout();

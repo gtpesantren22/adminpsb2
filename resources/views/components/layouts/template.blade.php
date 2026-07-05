@@ -61,7 +61,10 @@
                             request()->is('pendaftaran-baru*') ||
                             request()->is('pendaftaran-lama*') ||
                             request()->is('verifikasi-pendaftaran*');
-                        $registrasiActive = request()->is('registrasi-baru*') || request()->is('registrasi-lama*');
+                        $registrasiActive =
+                            request()->is('registrasi-baru*') ||
+                            request()->is('registrasi-lama*') ||
+                            request()->is('data-registrasi*');
                         $informasiActive =
                             request()->is('informasi-santri-baru*') || request()->is('informasi-santri-lama*');
                     @endphp
@@ -171,6 +174,14 @@
                                             ? 'bg-secondary-blue text-white'
                                             : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
                                         Registrasi Lanjutan
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/data-registrasi" wire:navigate
+                                        class="block px-4 py-2 rounded-lg transition {{ request()->is('data-registrasi*')
+                                            ? 'bg-secondary-blue text-white'
+                                            : 'text-blue-100 hover:bg-blue-700 hover:text-white' }}">
+                                        Semua Registrasi
                                     </a>
                                 </li>
                             </ul>
