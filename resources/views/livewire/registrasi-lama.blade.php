@@ -1,26 +1,68 @@
 <div>
     <!-- Master Data Page -->
     <div class="page-content">
-        {{-- <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">Master Data Tanggungan</h2>
-            <button
-                class="bg-gradient-to-r from-primary-blue to-secondary-blue text-white font-medium py-2.5 px-5 rounded-lg hover:from-primary-blue hover:to-primary-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-blue shadow-md transition duration-150 flex items-center"
-                data-bs-toggle="modal" data-bs-target="#addDataModal">
-                <i class="fas fa-plus mr-2"></i>Tambah Data
-            </button>
-        </div> --}}
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">Registrasi Santri Lanjutan</h2>
+                <p class="text-sm text-gray-500 mt-1">Kelola data administrasi pembayaran registrasi santri lanjutan (lama)</p>
+            </div>
+        </div>
+
+        <!-- Recap Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- Lunas Card -->
+            <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-green-500 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-gray-500">Santri Lunas</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ number_format($countLunas) }}</h3>
+                </div>
+                <div class="bg-green-50 text-green-600 p-3 rounded-lg">
+                    <i class="fas fa-check-circle text-2xl"></i>
+                </div>
+            </div>
+
+            <!-- Kurang Card -->
+            <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-amber-500 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-gray-500">Santri Kurang</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ number_format($countKurang) }}</h3>
+                </div>
+                <div class="bg-amber-50 text-amber-600 p-3 rounded-lg">
+                    <i class="fas fa-exclamation-triangle text-2xl"></i>
+                </div>
+            </div>
+
+            <!-- Belum Card -->
+            <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-red-500 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-wider text-gray-500">Santri Belum</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ number_format($countBelum) }}</h3>
+                </div>
+                <div class="bg-red-50 text-red-600 p-3 rounded-lg">
+                    <i class="fas fa-times-circle text-2xl"></i>
+                </div>
+            </div>
+        </div>
 
         <div class="bg-white rounded-xl shadow-md shadow-hover">
             <div class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between">
-                <div class="mb-4 md:mb-0">
+                <div class="mb-4 md:mb-0 flex flex-wrap items-center gap-3">
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400"></i>
                         </div>
                         <input type="text" wire:model.live="search"
-                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-blue focus:border-transparent"
-                            placeholder="Cari data...">
+                            class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary-blue focus:border-transparent text-sm w-64"
+                            placeholder="Cari nama santri / lembaga / desa...">
                     </div>
+
+                    <select wire:model.live="statusFilter"
+                        class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-secondary-blue text-sm">
+                        <option value="">-- Semua Status --</option>
+                        <option value="lunas">Lunas</option>
+                        <option value="kurang">Kurang</option>
+                        <option value="belum">Belum</option>
+                    </select>
                 </div>
                 <div class="flex space-x-3">
                     <select wire:model.live="paginate"
@@ -59,15 +101,15 @@
                         @forelse ($datas as $row)
                             @php
                                 $statusClass = '';
-                                if ($row->total_bayar < $row->total_tanggungan) {
+                                if ($row->total_bayar == 0) {
                                     $status = 'Belum';
-                                    $statusClass = 'bg-red-100 text-red-800';
-                                } elseif ($row->total_bayar == $row->total_tanggungan) {
-                                    $status = 'Lunas';
-                                    $statusClass = 'bg-green-100 text-green-800';
+                                    $statusClass = 'bg-red-100 text-red-800 border border-red-200';
+                                } elseif ($row->total_bayar < $row->total_tanggungan) {
+                                    $status = 'Kurang';
+                                    $statusClass = 'bg-amber-100 text-amber-800 border border-amber-200';
                                 } else {
-                                    $status = 'Lebih';
-                                    $statusClass = 'bg-yellow-100 text-yellow-800';
+                                    $status = 'Lunas';
+                                    $statusClass = 'bg-green-100 text-green-800 border border-green-200';
                                 }
                             @endphp
 

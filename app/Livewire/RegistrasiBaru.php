@@ -27,60 +27,101 @@ class RegistrasiBaru extends Component
     public $santri_id;
     public $tgl_bayar;
     public $via;
+    public $statusFilter = '';
+
+    public function updatedStatusFilter()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
-        // dd(Number::currency(120000, 'IDR'));
+        $baseQuery = Santri::query()
+            ->select([
+                'santris.id_santri',
+                'santris.nama',
+                'santris.lembaga',
+                DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
+                DB::raw('COALESCE(r.total_bayar, 0) as total_bayar'),
+                DB::raw('COALESCE(t.total_tanggungan, 0) - COALESCE(r.total_bayar, 0) as sisa'),
+            ])
+            // SUBQUERY TOTAL TANGGUNGAN
+            ->leftJoin(DB::raw("
+                (
+                    SELECT
+                        gelombang,
+                        jkl,
+                        ket,
+                        SUM(nominal) AS total_tanggungan
+                    FROM tanggungans
+                    GROUP BY gelombang, jkl, ket
+                ) t
+            "), function ($join) {
+                $join->on('t.gelombang', '=', 'santris.gel')
+                    ->on('t.jkl', '=', 'santris.jkl')
+                    ->on('t.ket', '=', 'santris.ket');
+            })
+
+            // SUBQUERY TOTAL BAYAR
+            ->leftJoin(DB::raw("
+                (
+                    SELECT
+                        id_santri,
+                        SUM(nominal) AS total_bayar
+                    FROM registrasis
+                    GROUP BY id_santri
+                ) r
+            "), 'r.id_santri', '=', 'santris.id_santri')
+            ->where('santris.ket', 'baru')
+            ->when($this->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('santris.nama', 'ILIKE', "%{$this->search}%")
+                        ->orWhere('santris.desa', 'ILIKE', "%{$this->search}%")
+                        ->orWhere('santris.kec', 'ILIKE', "%{$this->search}%")
+                        ->orWhere('santris.kab', 'ILIKE', "%{$this->search}%")
+                        ->orWhere('santris.lembaga', 'ILIKE', "%{$this->search}%");
+                });
+            });
+
+        // Calculate counts
+        $rekapQuery = DB::table(DB::raw("({$baseQuery->toSql()}) as sub"))
+            ->mergeBindings($baseQuery->getQuery())
+            ->select([
+                DB::raw("COUNT(CASE WHEN total_bayar = 0 AND total_tanggungan > 0 THEN 1 END) as belum"),
+                DB::raw("COUNT(CASE WHEN total_bayar >= total_tanggungan THEN 1 END) as lunas"),
+                DB::raw("COUNT(CASE WHEN total_bayar > 0 AND total_bayar < total_tanggungan THEN 1 END) as kurang"),
+            ])
+            ->first();
+
+        $countBelum = $rekapQuery->belum ?? 0;
+        $countLunas = $rekapQuery->lunas ?? 0;
+        $countKurang = $rekapQuery->kurang ?? 0;
+
+        // Apply status filter
+        $listQuery = clone $baseQuery;
+        if ($this->statusFilter === 'lunas') {
+            $listQuery->where(function($q) {
+                $q->whereRaw('COALESCE(r.total_bayar, 0) >= COALESCE(t.total_tanggungan, 0)');
+            });
+        } elseif ($this->statusFilter === 'kurang') {
+            $listQuery->where(function($q) {
+                $q->whereRaw('COALESCE(r.total_bayar, 0) > 0')
+                  ->whereRaw('COALESCE(r.total_bayar, 0) < COALESCE(t.total_tanggungan, 0)');
+            });
+        } elseif ($this->statusFilter === 'belum') {
+            $listQuery->where(function($q) {
+                $q->whereRaw('COALESCE(r.total_bayar, 0) = 0')
+                  ->whereRaw('COALESCE(t.total_tanggungan, 0) > 0');
+            });
+        }
+
+        $datas = $listQuery->paginate($this->paginate)->onEachSide(0);
+
         return view('livewire.registrasi-baru', [
-            'datas' =>
-            Santri::query()
-                ->select([
-                    'santris.id_santri',
-                    'santris.nama',
-                    'santris.lembaga',
-                    DB::raw('COALESCE(t.total_tanggungan, 0) as total_tanggungan'),
-                    DB::raw('COALESCE(r.total_bayar, 0) as total_bayar'),
-                    DB::raw('COALESCE(t.total_tanggungan, 0) - COALESCE(r.total_bayar, 0) as sisa'),
-                ])
-                // SUBQUERY TOTAL TANGGUNGAN
-                ->leftJoin(DB::raw("
-                    (
-                        SELECT
-                            gelombang,
-                            jkl,
-                            ket,
-                            SUM(nominal) AS total_tanggungan
-                        FROM tanggungans
-                        GROUP BY gelombang, jkl, ket
-                    ) t
-                "), function ($join) {
-                    $join->on('t.gelombang', '=', 'santris.gel')
-                        ->on('t.jkl', '=', 'santris.jkl')
-                        ->on('t.ket', '=', 'santris.ket');
-                })
-
-                // SUBQUERY TOTAL BAYAR
-                ->leftJoin(DB::raw("
-                    (
-                        SELECT
-                            id_santri,
-                            SUM(nominal) AS total_bayar
-                        FROM registrasis
-                        GROUP BY id_santri
-                    ) r
-                "), 'r.id_santri', '=', 'santris.id_santri')
-
-                ->where('santris.ket', 'baru')
-                ->when($this->search, function ($query) {
-                    $query->where(function ($q) {
-                        $q->where('santris.nama', 'ILIKE', "%{$this->search}%")
-                            ->orWhere('santris.desa', 'ILIKE', "%{$this->search}%")
-                            ->orWhere('santris.kec', 'ILIKE', "%{$this->search}%")
-                            ->orWhere('santris.kab', 'ILIKE', "%{$this->search}%")
-                            ->orWhere('santris.lembaga', 'ILIKE', "%{$this->search}%");
-                    });
-                })
-                ->paginate($this->paginate)->onEachSide(0)
+            'datas' => $datas,
+            'countBelum' => $countBelum,
+            'countLunas' => $countLunas,
+            'countKurang' => $countKurang,
         ]);
     }
 
