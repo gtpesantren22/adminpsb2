@@ -50,7 +50,6 @@ class DataDekosan extends Component
         'Ny. Mamjudah',
         'Ny. Naili Zulfa',
         'Ny. Lathifah Rois',
-        'Ny. Ummi Kulsum',
     ];
 
     public function mount()
